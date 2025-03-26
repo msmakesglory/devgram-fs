@@ -1,4 +1,4 @@
-package com.devgram.repository;
+package com.devgram.repositories;
 
 import com.devgram.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;

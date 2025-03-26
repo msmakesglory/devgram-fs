@@ -1,7 +1,10 @@
 package com.devgram.models;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
+
 import java.util.UUID;
 
 
@@ -10,20 +13,24 @@ import java.util.UUID;
 public class User {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
-    @Column(name = "userId", updatable = false, nullable = false, unique = true)
+    @Column(updatable = false, nullable = false, unique = true)
     private UUID userId;
 
-    @Column(name = "email", nullable = false)
+    @Column(nullable = false)
     private String email;
 
-    @Column(name = "profilePictureUrl")
+    @Column()
     private String profilePictureUrl;
 
-    @Column(name = "fullName")
+    @Column
     private String fullName;
 
-    @Column(name = "username")
+    @Column()
     private String username;
+
+    public UUID getUserId() {
+        return userId;
+    }
 
     public String getEmail() {
         return email;
@@ -31,10 +38,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public UUID getUserId() {
-        return userId;
     }
 
     public String getProfilePictureUrl() {

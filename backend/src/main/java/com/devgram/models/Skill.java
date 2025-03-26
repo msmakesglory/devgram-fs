@@ -9,10 +9,18 @@ import java.util.UUID;
 public class Skill {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
-    @Column(name = "skillId", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private UUID skillId;
 
-    @Column(name = "skillName", nullable = false, unique = true)
+    public String getSkillName() {
+        return skillName;
+    }
+
+    public void setSkillName(String skillName) {
+        this.skillName = skillName;
+    }
+
+    @Column(nullable = false, unique = true)
     private String skillName;
 
 }

@@ -1,7 +1,7 @@
 package com.devgram.service;
 
 import com.devgram.models.User;
-import com.devgram.repository.UserRepository;
+import com.devgram.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +19,7 @@ public class UserService {
         user.setUsername(username);
 
         userRepository.save(user);
+
+        System.out.println("new user added...");
     }
 }
