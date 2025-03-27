@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 import java.util.UUID;
+import java.util.Set;
 
 @Entity
 @Table(name = "skill")
@@ -18,5 +19,8 @@ public class Skill {
 
     @Column(nullable = false, unique = true)
     private String skillName;
+
+    @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PostSkill> postSkills;
 
 }

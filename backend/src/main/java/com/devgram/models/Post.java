@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
+import java.util.Set;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -34,4 +35,7 @@ public class Post {
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime timeStamp;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PostSkill> postSkills;
 }
