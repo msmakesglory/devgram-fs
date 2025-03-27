@@ -1,8 +1,6 @@
 package com.devgram;
 
-import com.devgram.service.SkillService;
-import com.devgram.service.UserService;
-import com.devgram.service.UserSkillService;
+import com.devgram.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -22,6 +20,9 @@ public class DevgramApplication implements CommandLineRunner {
 	@Autowired
 	private UserSkillService userSkillService;
 
+	@Autowired
+	private PostService postService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(DevgramApplication.class, args);
 	}
@@ -31,7 +32,8 @@ public class DevgramApplication implements CommandLineRunner {
 
 		UUID userId = UUID.fromString("43eb9f2f-d5ea-4612-8f2f-b1397b342ccc");
 		UUID skillId = UUID.fromString("c4a5933c-06df-488e-a36c-cdf52f51f5d1");
-		userSkillService.addUserSkill(userId, skillId);
+
+		postService.createPost(userId, "DevGram", "A collaborative platform for devs");
 	}
 
 }
