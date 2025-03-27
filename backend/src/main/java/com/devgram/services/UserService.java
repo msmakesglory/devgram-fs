@@ -1,4 +1,4 @@
-package com.devgram.service;
+package com.devgram.services;
 
 import com.devgram.models.User;
 import com.devgram.repositories.UserRepository;

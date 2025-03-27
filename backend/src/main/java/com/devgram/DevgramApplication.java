@@ -1,6 +1,7 @@
 package com.devgram;
 
-import com.devgram.service.*;
+import com.devgram.models.PostTeam;
+import com.devgram.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,6 +26,9 @@ public class DevgramApplication implements CommandLineRunner {
 	@Autowired
 	private PostSkillService postSkillService;
 
+	@Autowired
+	private PostTeamService postTeamService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(DevgramApplication.class, args);
 	}
@@ -35,8 +39,13 @@ public class DevgramApplication implements CommandLineRunner {
 		UUID userId = UUID.fromString("43eb9f2f-d5ea-4612-8f2f-b1397b342ccc");
 		UUID skillId = UUID.fromString("c4a5933c-06df-488e-a36c-cdf52f51f5d1");
 		UUID postId = UUID.fromString("b6bc06bf-44c6-4f02-a5f0-8e78844cbac6");
+		UUID ownerId = UUID.fromString("43eb9f2f-d5ea-4612-8f2f-b1397b342ccc");
+		UUID collaboratorId = UUID.fromString("e086f54f-02ad-41d8-8994-219ce4f3015b");
 
-		userService.createUser("Varma@6523452.mail", "http://gwgfei.jpg", "varmavarma", "varma_varma");
+		postTeamService.addCollaborator(postId, ownerId, PostTeam.Role.OWNER);
+		postTeamService.addCollaborator(postId, collaboratorId, PostTeam.Role.COLLABORATOR);
+
+
 
 	}
 

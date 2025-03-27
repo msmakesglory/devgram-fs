@@ -1,4 +1,4 @@
-package com.devgram.service;
+package com.devgram.services;
 
 import com.devgram.models.*;
 import org.springframework.beans.factory.annotation.Autowired;

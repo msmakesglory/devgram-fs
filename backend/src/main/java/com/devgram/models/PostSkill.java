@@ -16,12 +16,12 @@ public class PostSkill implements Serializable {
     private PostSkillId id;
 
     @ManyToOne
-    @MapsId("postId") // Matches the field name in PostSkillId
+    @MapsId("postId")
     @JoinColumn(nullable = false)
     private Post post;
 
     @ManyToOne
-    @MapsId("skillId") // Matches the field name in PostSkillId
+    @MapsId("skillId")
     @JoinColumn(nullable = false)
     private Skill skill;
 

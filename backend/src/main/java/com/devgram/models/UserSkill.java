@@ -34,18 +34,4 @@ public class UserSkill {
         this.id = new UserSkillId(user.getUserId(), skill.getSkillId());
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserSkill userSkill = (UserSkill) o;
-        return Objects.equals(id, userSkill.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
 }

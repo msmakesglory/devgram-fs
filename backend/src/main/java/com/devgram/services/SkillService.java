@@ -1,4 +1,4 @@
-package com.devgram.service;
+package com.devgram.services;
 
 import com.devgram.models.Skill;
 import com.devgram.repositories.SkillRepository;
