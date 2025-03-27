@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.util.Objects;
 
+
 @Entity
 @Table(name = "userSkills")
 @Setter
@@ -26,6 +27,12 @@ public class UserSkill {
     @MapsId("skillId")
     @JoinColumn(nullable = false)
     private Skill skill;
+
+    public UserSkill() {}
+
+    public UserSkill(User user, Skill Skill) {
+        this.id = new UserSkillId(user.getUserId(), skill.getSkillId());
+    }
 
 
     @Override

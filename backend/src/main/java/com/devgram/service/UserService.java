@@ -11,7 +11,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void addUser(String email, String profilePictureUrl, String fullName, String username) {
+    public void createUser(String email, String profilePictureUrl, String fullName, String username) {
         User user = new User();
         user.setEmail(email);
         user.setProfilePictureUrl(profilePictureUrl);

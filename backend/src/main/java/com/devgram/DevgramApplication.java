@@ -1,12 +1,10 @@
 package com.devgram;
 
-import com.devgram.models.PostSkill;
 import com.devgram.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.util.UUID;
 
 @SpringBootApplication
@@ -38,7 +36,8 @@ public class DevgramApplication implements CommandLineRunner {
 		UUID skillId = UUID.fromString("c4a5933c-06df-488e-a36c-cdf52f51f5d1");
 		UUID postId = UUID.fromString("b6bc06bf-44c6-4f02-a5f0-8e78844cbac6");
 
-		postSkillService.addPostSkill(postId, skillId);
+		userService.createUser("Varma@6523452.mail", "http://gwgfei.jpg", "varmavarma", "varma_varma");
+
 	}
 
 }

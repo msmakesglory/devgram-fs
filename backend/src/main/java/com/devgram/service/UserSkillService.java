@@ -24,13 +24,7 @@ public class UserSkillService {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Skill skill = skillRepository.findById(skillId).orElseThrow(() -> new RuntimeException("Skill not found"));
 
-        UserSkillId userSkillId = new UserSkillId(userId, skillId);
-
-        UserSkill userSkill = new UserSkill();
-        userSkill.setId(userSkillId);
-        userSkill.setUser(user);
-        userSkill.setSkill(skill);
-
+        UserSkill userSkill = new UserSkill(user, skill);
         userSkillRepository.save(userSkill);
 
         System.out.println("userskill created...");
