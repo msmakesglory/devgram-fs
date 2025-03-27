@@ -2,12 +2,16 @@ package com.devgram.models;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "userSkills")
+@Setter
+@Getter
 public class UserSkill {
 
     @EmbeddedId
@@ -23,29 +27,6 @@ public class UserSkill {
     @JoinColumn(nullable = false)
     private Skill skill;
 
-    public UserSkillId getId() {
-        return id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Skill getSkill() {
-        return skill;
-    }
-
-    public void setSkill(Skill skill) {
-        this.skill = skill;
-    }
-
-    public void setId(UserSkillId id) {
-        this.id = id;
-    }
 
     @Override
     public boolean equals(Object o) {

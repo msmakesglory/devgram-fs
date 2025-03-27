@@ -22,21 +22,6 @@ public class UserSkillId implements Serializable {
         this.skillId = skillId;
     }
 
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
-
-    public UUID getSkillId() {
-        return skillId;
-    }
-
-    public void setSkillId(UUID skillId) {
-        this.skillId = skillId;
-    }
 
     @Override
     public boolean equals(Object o) {
