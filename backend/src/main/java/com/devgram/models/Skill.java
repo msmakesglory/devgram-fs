@@ -1,26 +1,28 @@
 package com.devgram.models;
 
+
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.UuidGenerator;
-import java.util.UUID;
-import java.util.Set;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "skill")
-@Setter
-@Getter
+@Table(name = "skills")
+@Data
 public class Skill {
     @Id
-    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
-    @Column(nullable = false, unique = true)
-    private UUID skillId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long skillId;
 
-    @Column(nullable = false, unique = true)
     private String skillName;
 
-    @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PostSkill> postSkills;
+    @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL) // Mapped by the skills field in User
+    private List<User> users = new ArrayList<>();
 
+    public Skill() {}
+
+    public Skill(String skillName) {
+        this.skillName = skillName;
+    }
 }

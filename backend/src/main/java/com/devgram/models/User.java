@@ -1,36 +1,44 @@
 package com.devgram.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-
 @Entity
+@Data
 @Table(name = "users")
-@Setter
-@Getter
 public class User {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     @Column(updatable = false, nullable = false, unique = true)
-    private UUID userId;
+    private UUID id;
 
-    @Column(nullable = false)
+    private String fullName;
+
+    private String userName;
+
     private String email;
 
     private String profilePictureUrl;
 
-    private String fullName;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_skill", // Name of the join table
+            joinColumns = @JoinColumn(name = "user_id"), // Foreign key for User
+            inverseJoinColumns = @JoinColumn(name = "skill_id") // Foreign key for Skill
+    )
 
-    private String username;
+    private List<Skill> skills = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Post> posts;
+    public User() {}
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PostTeam> postsCollaboratedOn;
-
+    public User(String fullName, String userName, String email, String profilePictureUrl){
+        this.fullName = fullName;
+        this.userName = userName;
+        this.email = email;
+        this.profilePictureUrl = profilePictureUrl;
+    }
 }

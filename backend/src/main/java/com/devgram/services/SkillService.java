@@ -12,8 +12,7 @@ public class SkillService {
     private SkillRepository skillRepository;
 
     public void addSkill(String skillName) {
-        Skill skill = new Skill();
-        skill.setSkillName(skillName);
+        Skill skill = new Skill(skillName);
 
         skillRepository.save(skill);
 
