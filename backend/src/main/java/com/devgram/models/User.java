@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 import java.util.Set;
-
-
 import java.util.UUID;
 
 
@@ -23,13 +21,10 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Column()
     private String profilePictureUrl;
 
-    @Column
     private String fullName;
 
-    @Column()
     private String username;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
