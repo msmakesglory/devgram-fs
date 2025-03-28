@@ -26,9 +26,9 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "user_skill", // Name of the join table
-            joinColumns = @JoinColumn(name = "user_id"), // Foreign key for User
-            inverseJoinColumns = @JoinColumn(name = "skill_id") // Foreign key for Skill
+            name = "user_skill",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
 
     private List<Skill> skills = new ArrayList<>();

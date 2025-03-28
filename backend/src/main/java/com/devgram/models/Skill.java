@@ -17,7 +17,7 @@ public class Skill {
 
     private String skillName;
 
-    @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL) // Mapped by the skills field in User
+    @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL)
     private List<User> users = new ArrayList<>();
 
     public Skill() {}
