@@ -1,7 +1,9 @@
 package com.devgram.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -13,6 +15,8 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name = "posts")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Post {
 
     @Id
@@ -50,11 +54,4 @@ public class Post {
     )
     private List<User> collaborators = new ArrayList<>();
 
-    public Post() {}
-
-    public Post(User createdBy, String title, String description) {
-        this.createdBy = createdBy;
-        this.title = title;
-        this.description = description;
-    }
 }

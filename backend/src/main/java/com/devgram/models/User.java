@@ -1,7 +1,9 @@
 package com.devgram.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
@@ -32,13 +36,4 @@ public class User {
     )
 
     private List<Skill> skills = new ArrayList<>();
-
-    public User() {}
-
-    public User(String fullName, String userName, String email, String profilePictureUrl){
-        this.fullName = fullName;
-        this.userName = userName;
-        this.email = email;
-        this.profilePictureUrl = profilePictureUrl;
-    }
 }

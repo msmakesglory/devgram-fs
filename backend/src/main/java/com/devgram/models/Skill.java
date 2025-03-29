@@ -2,7 +2,9 @@ package com.devgram.models;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.List;
 @Entity
 @Table(name = "skills")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -20,9 +24,4 @@ public class Skill {
     @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL)
     private List<User> users = new ArrayList<>();
 
-    public Skill() {}
-
-    public Skill(String skillName) {
-        this.skillName = skillName;
-    }
 }
