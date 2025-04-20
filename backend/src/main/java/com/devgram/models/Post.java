@@ -26,7 +26,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "created_by_user_id", nullable = false)
-    private User createdBy;
+    private MyUser createdBy;
 
     @Column(nullable = false, length = 100)
     private String title;
@@ -52,6 +52,6 @@ public class Post {
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<User> collaborators = new ArrayList<>();
+    private List<MyUser> collaborators = new ArrayList<>();
 
 }

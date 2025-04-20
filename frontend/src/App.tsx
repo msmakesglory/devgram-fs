@@ -12,6 +12,8 @@ import Profile from "./pages/Profile";
 import Chat from "./pages/Chat";
 import Projects from "./pages/Projects";
 import NotFound from "./pages/NotFound";
+import UserPage from "@/test/dashboard.tsx";
+import OAuth from "@/test/OAuth.tsx";
 
 const queryClient = new QueryClient();
 
@@ -23,14 +25,19 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/feed" element={<Feed />} />
-            <Route path="/profile/:id" element={<Profile />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/projects" element={<Projects />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
+
+            <Route path="/" element={<OAuth />} />
+            <Route path="/user" element={<UserPage />} />
+
+
+            {/*<Route path="/" element={<Index />} />*/}
+            {/*<Route path="/auth" element={<Auth />} />*/}
+            {/*<Route path="/feed" element={<Feed />} />*/}
+            {/*<Route path="/profile/:id" element={<Profile />} />*/}
+            {/*<Route path="/chat" element={<Chat />} />*/}
+            {/*<Route path="/projects" element={<Projects />} />*/}
+            {/*/!* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE *!/*/}
+            {/*<Route path="*" element={<NotFound />} />*/}
           </Routes>
         </BrowserRouter>
       </AuthProvider>

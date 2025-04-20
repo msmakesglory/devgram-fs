@@ -1,4 +1,5 @@
-package com.devgram.repositories;
+package com.devgram.repos;
+
 
 import com.devgram.models.Skill;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -22,6 +22,6 @@ public class Skill {
     private String skillName;
 
     @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL)
-    private List<User> users = new ArrayList<>();
+    private List<MyUser> users = new ArrayList<>();
 
 }
