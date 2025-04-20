@@ -2,25 +2,11 @@ import React, { useEffect, useState } from 'react';
 import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Avatar} from "@radix-ui/react-avatar";
 import {AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
+import { useUserContext } from '@/contexts/UserContext';
 
 const UserPage = () => {
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        fetch('http://localhost:8080/auth/user/me', {
-            method: 'GET',
-            credentials: 'include', // this is key to send cookies
-        })
-            .then(res => {
-                if (!res.ok) throw new Error('Unauthorized');
-                return res.json();
-            })
-            .then(data => {
-                console.log(data)
-                setUser(data)
-            })
-            .catch(err => console.error('Failed to fetch user', err));
-    }, []);
+    
+    const { user } = useUserContext();
 
     if (!user) return <p>Loading...</p>;
 
