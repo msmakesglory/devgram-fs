@@ -18,9 +18,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequestMapping("/auth")
+@RequestMapping("/auth/google")
 @RestController
-public class OAuthController {
+public class GoogleAuthController {
 
     @Autowired
     MyUserService myUserService;
@@ -40,10 +40,10 @@ public class OAuthController {
     @Value("${oauth.grant-type}")
     String grantType;
 
-    @Value("${oauth.redirect-uri}")
+    @Value("${oauth.google.redirect-uri}")
     String redirectUri;
 
-    @GetMapping("/google/callback")
+    @GetMapping("/callback")
     public void handleGoogleCallback(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
         // Step 1: Get access token from Google
         String access_token = (String) getAccessTokenFromGoogle(code).getBody().get("access_token");
@@ -89,7 +89,7 @@ public class OAuthController {
 
         ResponseEntity<Map> response = restTemplate.postForEntity("https://oauth2.googleapis.com/token", request, Map.class);
         return response;
-    }
+    };
 
     private Map<String, Object> getUserInfoFromGoogle(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
@@ -115,13 +115,6 @@ public class OAuthController {
         simplifiedUser.put("picture", userInfo.get("picture"));
 
         return simplifiedUser;
-    }
-    @GetMapping("/user/me")
-    public ResponseEntity<MyUser> getCurrentUser(@CookieValue("jwt") String token) {
-        String email = jwtUtils.extractUsername(token);
-
-        MyUser user = myUserRepository.findByEmail(email).orElseThrow();
-        return ResponseEntity.ok(user);
     }
 
 }

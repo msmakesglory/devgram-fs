@@ -50,4 +50,35 @@ public class MyUserService implements UserDetailsService {
         return userRepository.save(newUser);
     }
 
+    public MyUser saveGithubUser(Map<String, Object> githubUserData) {
+        String fullName = (String) githubUserData.get("name");
+        String email = (String) githubUserData.get("email");
+        String picture = (String) githubUserData.get("picture");
+
+        // GitHub name might be null, fallback to username
+        if (fullName == null || fullName.isBlank()) {
+            fullName = (String) githubUserData.get("login");
+        }
+
+        // If email is null, you might want to fetch verified emails separately or handle it
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("GitHub email is not available. Make sure it's public or handle it explicitly.");
+        }
+
+        String userName = email.split("@")[0];
+
+        Optional<MyUser> existingUserOpt = userRepository.findByEmail(email);
+        if (existingUserOpt.isPresent()) {
+            return existingUserOpt.get();
+        }
+
+        MyUser newUser = new MyUser();
+        newUser.setFullName(fullName);
+        newUser.setUserName(userName);
+        newUser.setEmail(email);
+        newUser.setProfilePictureUrl(picture);
+
+        return userRepository.save(newUser);
+    }
+
 }

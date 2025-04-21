@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {Avatar} from "@radix-ui/react-avatar";
-import {AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
+import {Avatar,AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
 import { useUserContext } from '@/contexts/UserContext';
 
 const UserPage = () => {
@@ -11,7 +10,7 @@ const UserPage = () => {
     if (!user) return <p>Loading...</p>;
 
     return (
-        <Card className="w-1/6 mx-auto">
+        <Card className="w-1/6 mx-auto flex gap-2">
             <Avatar>
                 <AvatarImage src={user.profilePictureUrl}/>
                 <AvatarFallback>MR</AvatarFallback>

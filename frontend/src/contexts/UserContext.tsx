@@ -1,5 +1,6 @@
 import React, {createContext, Dispatch, ReactNode, SetStateAction, useContext, useState, useEffect} from "react";
 import User from "@/types/User";
+import api from "@/api/api.ts";
 
 interface UserContextType {
     user: User | null;
@@ -19,20 +20,18 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
-            fetch('http://localhost:8080/auth/user/me', {
-                method: 'GET',
-                credentials: 'include', // this is key to send cookies
-            })
-                .then(res => {
-                    if (!res.ok) throw new Error('Unauthorized');
-                    return res.json();
-                })
-                .then(data => {
-                    console.log(data)
-                    setUser(data)
-                })
-                .catch(err => console.error('Failed to fetch user', err));
-        }, []);
+        const fetchUserData = async () => {
+            try {
+                const response = await api.get("/user/me");
+                setUser(response.data); // Set the user data once fetched
+            } catch (err) {
+                console.error('Failed to fetch user', err);
+                // Optionally, you can show a message to the user here
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     return (
         <UserContext.Provider value={{user, setUser}} >

@@ -15,6 +15,8 @@ import NotFound from "./pages/NotFound";
 import UserPage from "@/test/dashboard.tsx";
 import OAuth from "@/test/OAuth.tsx";
 import { UserProvider } from "./contexts/UserContext";
+import Github from "@/test/Github.tsx";
+import {Demo} from "@/test/Demo.tsx";
 
 const queryClient = new QueryClient();
 
@@ -28,8 +30,9 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-
-              <Route path="/" element={<OAuth />} />
+              <Route path="/" element={<Demo />} />
+              <Route path="/google" element={<OAuth />} />
+              <Route path="/github" element={<Github />} />
               <Route path="/user" element={<UserPage />} />
 
 
