@@ -10,7 +10,7 @@ const UserPage = () => {
     if (!user) return <p>Loading...</p>;
 
     return (
-        <Card className="w-1/6 mx-auto flex gap-2">
+        <Card className="w-1/6 mx-auto flex items-center justify-center gap-2">
             <Avatar>
                 <AvatarImage src={user.profilePictureUrl}/>
                 <AvatarFallback>MR</AvatarFallback>

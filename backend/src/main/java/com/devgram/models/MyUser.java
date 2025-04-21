@@ -8,10 +8,7 @@ import org.hibernate.annotations.UuidGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Data
@@ -31,6 +28,15 @@ public class MyUser implements UserDetails {
     private String email;
 
     private String profilePictureUrl;
+
+    private String bio;
+
+    private String location;
+    private String website;
+
+    private Date joinDate;
+    private Integer projectCount = 0;
+    private Integer impressionsCount = 0;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
