@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const OAuth = () => {
+const Google = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userInfo, setUserInfo] = useState(null);
     const [error, setError] = useState(null);
@@ -149,4 +149,4 @@ const OAuth = () => {
     );
 };
 
-export default OAuth;
+export default Google;
