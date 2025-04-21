@@ -31,9 +31,11 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Demo />} />
+              <Route path="/p" element={<Profile />} />
               <Route path="/google" element={<OAuth />} />
               <Route path="/github" element={<Github />} />
               <Route path="/user" element={<UserPage />} />
+              <Route path="*" element={<NotFound/>} />
 
 
               {/*<Route path="/" element={<Index />} />*/}
