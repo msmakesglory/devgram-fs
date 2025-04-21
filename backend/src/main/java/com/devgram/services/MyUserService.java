@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -46,7 +47,7 @@ public class MyUserService implements UserDetailsService {
         newUser.setUserName(userName);
         newUser.setEmail(email);
         newUser.setProfilePictureUrl(picture);
-
+        newUser.setJoinDate(new Date());
         return userRepository.save(newUser);
     }
 
