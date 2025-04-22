@@ -11,12 +11,13 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'; // Import shadcn components
 import {useNavigate} from "react-router-dom";
+import api from "@/api/api.ts";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const { userId, user } = useUserContext();
+  const { user } = useUserContext();
   const navigate = useNavigate();
 
   // Handle scroll effect
@@ -60,6 +61,16 @@ const Navbar = () => {
     { name: 'Projects', path: '/projects' },
     { name: 'Chat', path: '/chat' },
   ];
+  function handleLogout() {
+    api.get('/user/logout')
+        .then(() => {
+          window.location.href = 'http://localhost:5173/auth';
+          console.log("LogOut Successfull")
+        })
+        .catch((err) => {
+          console.error('Logout failed:', err);
+        });
+  }
 
   return (
     <nav
@@ -119,7 +130,7 @@ const Navbar = () => {
           </button>
 
           {/* Profile Dropdown or Auth Button */}
-          {userId ? (
+          {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
@@ -151,7 +162,9 @@ const Navbar = () => {
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuItem>Account</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-500 focus:text-red-600">
+                <DropdownMenuItem className="text-red-500 focus:text-red-600"
+                  onClick={handleLogout}
+                >
                   Logout
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -209,7 +222,7 @@ const Navbar = () => {
               <span>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
             </button>
 
-            {!user.id ?
+            {user ?
                 <Link
                   to="/auth"
                   className="py-2 px-4 border border-foreground/10 hover:border-foreground/20 rounded-lg text-center smooth-transition"
