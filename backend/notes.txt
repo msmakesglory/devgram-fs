@@ -1,0 +1,7 @@
+posts api
+
+GET posts/
+GET posts/:id
+POST posts/
+PUT posts/
+DELETE posts/

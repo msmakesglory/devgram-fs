@@ -3,6 +3,7 @@ package com.devgram.services;
 
 import com.devgram.models.MyUser;
 import com.devgram.repos.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -82,4 +83,8 @@ public class MyUserService implements UserDetailsService {
         return userRepository.save(newUser);
     }
 
+    MyUser getUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByEmail(username).orElseThrow(()->new UsernameNotFoundException("MyUser not found"));
+    }
 }

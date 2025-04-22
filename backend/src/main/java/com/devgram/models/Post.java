@@ -54,4 +54,13 @@ public class Post {
     )
     private List<MyUser> collaborators = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "Post{" +
+                "postId=" + postId +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", skills=" + skills +
+                '}';
+    }
 }
