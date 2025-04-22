@@ -1,65 +1,24 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import {Sun, Github, GithubIcon } from 'lucide-react'; // Adjust path if necessary // Assuming you have icons for GitHub and Google
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import {Sun, Github, GithubIcon, Globe} from 'lucide-react';
+import GitHubOAuth from "@/test/Github.tsx";
+import Google from "@/test/Google.tsx";
 
 
 const Auth = () => {
-  const supabase = useSupabaseClient();
   const navigate = useNavigate();
 
-  // Handle GitHub login
-  // const handleGitHubLogin = async () => {
-  //   const { error } = await supabase.auth.signInWithOAuth({
-  //     provider: 'github',
-  //     options: {
-  //       redirectTo: `${window.location.origin}/auth/callback`, // Redirect after login
-  //     },
-  //   });
-
-  //   if (error) {
-  //     console.error('GitHub login failed:', error.message);
-  //   }
-  // };
-
-  // // Handle Google login
-  // const handleGoogleLogin = async () => {
-  //   const { error } = await supabase.auth.signInWithOAuth({
-  //     provider: 'google',
-  //     options: {
-  //       redirectTo: `${window.location.origin}/auth/callback`, // Redirect after login
-  //     },
-  //   });
-
-  //   if (error) {
-  //     console.error('Google login failed:', error.message);
-  //   }
-  // };
 
   return (
     <div className="glass-panel rounded-xl p-6 w-full max-w-md mx-auto">
       <h2 className="text-2xl font-bold text-center mb-6">Sign in to your account</h2>
 
       {/* GitHub Login Button */}
-      <Button
-        variant="outline"
-        className="w-full justify-start gap-2 mb-4"
-        onClick={() => navigate('/github')}
-      >
-        <GithubIcon className="w-5 h-5" />
-        Sign in with GitHub
-      </Button>
+      <GitHubOAuth/>
 
       {/* Google Login Button */}
-      <Button
-        variant="outline"
-        className="w-full justify-start gap-2"
-        onClick={() => navigate("/google")}
-      >
-        <Sun className="w-5 h-5" />
-        Sign in with Google
-      </Button>
+      <Google/>
 
       <div className="text-center mt-6">
         <p className="text-sm text-muted-foreground">

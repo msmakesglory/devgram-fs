@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Cookies from 'js-cookie';
+import {GithubIcon} from "lucide-react";
+import {Button} from "@/components/ui/button.tsx";
+import {FaGithub} from "react-icons/fa";
 
 const GitHubOAuth = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [userInfo, setUserInfo] = useState(null);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
 
     // GitHub OAuth configuration
     const CLIENT_ID = 'Ov23li53P58uwn2DsB2h';
     const REDIRECT_URI = 'http://localhost:8080/auth/github/callback';
     const AUTH_ENDPOINT = 'https://github.com/login/oauth/authorize';
     const SCOPES = 'read:user user:email';
-
-    // Spring Boot backend endpoint
-    const BACKEND_USER_INFO_URL = '/auth/user/me';
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -55,34 +50,14 @@ const GitHubOAuth = () => {
 
 
     return (
-        <div className="oauth-container">
-            <h2>GitHub OAuth Authentication</h2>
-
-            {loading && <div className="loading">Authenticating...</div>}
-            {error && <div className="error">{error}</div>}
-
-            {!isAuthenticated ? (
-                <button
-                    className="login-button"
-                    onClick={initiateLogin}
-                    disabled={loading}
-                >
-                    Login with GitHub
-                </button>
-            ) : (
-                <div className="user-profile">
-                    <h3>Welcome, {userInfo?.fullName || 'User'}</h3>
-                    {userInfo?.email && <p>Email: {userInfo.email}</p>}
-                    {userInfo?.profilePictureUrl && (
-                        <img
-                            src={userInfo.profilePictureUrl}
-                            alt="Profile"
-                            className="profile-image"
-                        />
-                    )}
-                </div>
-            )}
-        </div>
+        <Button
+            variant="outline"
+            className="w-full justify-start gap-2 mb-4"
+            onClick={initiateLogin}
+        >
+            <FaGithub className="w-5 h-5" />
+            Sign in with GitHub
+        </Button>
     );
 };
 

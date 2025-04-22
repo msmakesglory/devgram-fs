@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import {GithubIcon, Globe} from "lucide-react";
+import {Button} from "@/components/ui/button.tsx";
+import {FcGoogle} from "react-icons/fc";
 
 const Google = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -111,41 +114,14 @@ const Google = () => {
     };
 
     return (
-        <div className="oauth-container">
-            <h2>OAuth Authentication</h2>
-
-            {loading && <div className="loading">Authenticating...</div>}
-
-            {error && <div className="error">{error}</div>}
-
-            {!isAuthenticated ? (
-                <button
-                    className="login-button"
-                    onClick={initiateLogin}
-                    disabled={loading}
-                >
-                    Login with Google
-                </button>
-            ) : (
-                <div className="user-profile">
-                    <h3>Welcome, {userInfo?.name || 'User'}</h3>
-                    {userInfo?.email && <p>Email: {userInfo.email}</p>}
-                    {userInfo?.picture && (
-                        <img
-                            src={userInfo.picture}
-                            alt="Profile"
-                            className="profile-image"
-                        />
-                    )}
-                    <button
-                        className="logout-button"
-                        onClick={handleLogout}
-                    >
-                        Logout
-                    </button>
-                </div>
-            )}
-        </div>
+        <Button
+            variant="outline"
+            className="w-full justify-start gap-2 mb-4"
+            onClick={initiateLogin}
+        >
+            <FcGoogle className="w-5 h-5" />
+            Sign in with Google
+        </Button>
     );
 };
 
