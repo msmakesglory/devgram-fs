@@ -50,7 +50,7 @@ const ProfileCard = ({
       {profilePictureUrl && (
         <div className="h-48 w-full relative -mt-6 -mx-6 mb-4">
           <img
-            src={profilePictureUrl}
+            src="https://picsum.photos/800/600"
             alt={`${fullName}'s cover`}
             className="w-full h-full object-cover"
           />
