@@ -13,10 +13,7 @@ import Chat from "./pages/Chat";
 import Projects from "./pages/Projects";
 import NotFound from "./pages/NotFound";
 import UserPage from "@/test/dashboard.tsx";
-import Google from "@/test/Google.tsx";
 import { UserProvider } from "./contexts/UserContext";
-import Github from "@/test/Github.tsx";
-import {Demo} from "@/test/Demo.tsx";
 
 const queryClient = new QueryClient();
 
@@ -31,16 +28,12 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/p" element={<Profile />} />
-              <Route path="/google" element={<Google />} />
-              <Route path="/github" element={<Github />} />
-              <Route path="/user" element={<UserPage />} />
               <Route path="*" element={<NotFound/>} />
               <Route path="/projects" element={<Projects />} />
-
               <Route path="/auth" element={<Auth />} />
-              {<Route path="/feed" element={<Feed />} />}
-              {<Route path="/profile/:id" element={<Profile />} />}
-              {<Route path="/chat" element={<Chat />} />}
+              <Route path="/feed" element={<Feed />} />
+              <Route path="/profile/:id" element={<Profile />} />
+              <Route path="/chat" element={<Chat />} />
             
             </Routes>
           </BrowserRouter>

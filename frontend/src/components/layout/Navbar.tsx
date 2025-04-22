@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, Github, Search, Moon, Sun, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useUserContext } from '@/contexts/UserContext';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-
+  const { userId } = useUserContext();
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
@@ -108,20 +109,15 @@ const Navbar = () => {
           </button>
 
           {/* Auth Buttons or Profile */}
+          {!userId ?
           <div className="flex items-center space-x-3">
-            <Link 
-              to="/signin" 
-              className="py-2 px-4 rounded-lg border border-foreground/10 hover:border-foreground/20 smooth-transition text-sm"
-            >
-              Sign In
-            </Link>
-            <Link 
-              to="/signup" 
-              className="bg-primary text-primary-foreground hover:bg-primary/90 smooth-transition py-2 px-4 rounded-lg text-sm button-hover"
-            >
-              Join DevGram
-            </Link>
-          </div>
+          <Link 
+            to="/auth" 
+            className="py-2 px-4 rounded-lg border border-foreground/10 hover:border-foreground/20 smooth-transition text-sm"
+          >
+            Sign In
+          </Link>
+        </div> : null }
         </div>
 
         {/* Mobile menu button */}
@@ -166,19 +162,11 @@ const Navbar = () => {
             </button>
             
             <Link 
-              to="/signin" 
+              to="/auth" 
               className="py-2 px-4 border border-foreground/10 hover:border-foreground/20 rounded-lg text-center smooth-transition"
               onClick={() => setIsMenuOpen(false)}
             >
               Sign In
-            </Link>
-            
-            <Link 
-              to="/signup" 
-              className="bg-primary text-primary-foreground hover:bg-primary/90 py-2 px-4 rounded-lg text-center button-hover smooth-transition"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Join DevGram
             </Link>
           </div>
         </div>

@@ -2,8 +2,12 @@ import React from 'react';
 import { ArrowRight, Code, Users, GitBranch } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Button from '../ui/CustomButton';
+import { useUserContext } from '@/contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const { userId } = useUserContext();
+  const navigate = useNavigate();
   return (
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
       {/* Background gradient */}
@@ -36,6 +40,7 @@ const Hero = () => {
               variant="primary" 
               size="lg" 
               className="group"
+              onClick={userId ? () => navigate("/p") : () => navigate("/auth")}
             >
               Join the Community
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
