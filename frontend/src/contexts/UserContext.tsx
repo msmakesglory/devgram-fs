@@ -24,6 +24,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     useEffect(() => {
         const fetchUserData = async () => {
+            console.log("testing...");
             try {
                 const response = await api.get("/user/me");
                 console.log(response.data)

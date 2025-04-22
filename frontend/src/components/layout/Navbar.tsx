@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'; // Import shadcn components
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import api from "@/api/api.ts";
 
 const Navbar = () => {
@@ -19,6 +19,9 @@ const Navbar = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const { user } = useUserContext();
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentRoute = location.pathname;
+
 
   // Handle scroll effect
   useEffect(() => {
@@ -130,55 +133,57 @@ const Navbar = () => {
           </button>
 
           {/* Profile Dropdown or Auth Button */}
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden cursor-pointer"
-                  aria-label="Toggle profile dropdown"
-                >
-                  <img
-                    src={user.profilePictureUrl}
-                    alt={user.fullName}
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem className="flex items-center space-x-3 p-3">
-                  <div className="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+          {currentRoute === "/auth" ? 
+            null : 
+            user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden cursor-pointer"
+                    aria-label="Toggle profile dropdown"
+                  >
                     <img
                       src={user.profilePictureUrl}
                       alt={user.fullName}
                       className="w-full h-full object-cover"
                     />
-                  </div>
-                  <div >
-                    <p className="font-medium">{user.fullName}</p>
-                    <p className="text-sm text-foreground/60"  onClick={() => navigate("/user")}>View profile</p>
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Account</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-500 focus:text-red-600"
-                  onClick={handleLogout}
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem className="flex items-center space-x-3 p-3">
+                    <div className="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                      <img
+                        src={user.profilePictureUrl}
+                        alt={user.fullName}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div >
+                      <p className="font-medium">{user.fullName}</p>
+                      <p className="text-sm text-foreground/60"  onClick={() => navigate("/user")}>View profile</p>
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Settings</DropdownMenuItem>
+                  <DropdownMenuItem>Account</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-red-500 focus:text-red-600"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex items-center space-x-3">
+                <Link
+                  to="/auth"
+                  className="py-2 px-4 rounded-lg border border-foreground/10 hover:border-foreground/20 smooth-transition text-sm"
                 >
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <div className="flex items-center space-x-3">
-              <Link
-                to="/auth"
-                className="py-2 px-4 rounded-lg border border-foreground/10 hover:border-foreground/20 smooth-transition text-sm"
-              >
-                Sign In
-              </Link>
-            </div>
-          )}
+                  Sign In
+                </Link>
+              </div>
+            )}
         </div>
 
         {/* Mobile menu button */}
@@ -222,7 +227,7 @@ const Navbar = () => {
               <span>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
             </button>
 
-            {user ?
+            {!user ?
                 <Link
                   to="/auth"
                   className="py-2 px-4 border border-foreground/10 hover:border-foreground/20 rounded-lg text-center smooth-transition"
