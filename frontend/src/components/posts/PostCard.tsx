@@ -66,6 +66,9 @@ const PostCard = ({
             src={user.avatar} 
             alt={user.name} 
             className="w-10 h-10 rounded-full object-cover ring-2 ring-white/10 group-hover:ring-blue-400/50 transition-all duration-300"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = '/default-avatar.png'; // fallback image
+            }}
           />
           <div>
             <h3 className="font-medium text-foreground group-hover:text-blue-500 transition-colors">

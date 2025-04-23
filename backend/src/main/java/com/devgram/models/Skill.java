@@ -19,6 +19,7 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long skillId;
 
+    @Column(nullable = false, unique = true)
     private String skillName;
 
     @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL)

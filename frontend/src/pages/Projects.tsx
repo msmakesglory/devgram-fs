@@ -36,11 +36,7 @@ const Projects = () => {
           id: post.postId,
           name: post.title,
           description: post.description,
-          owner: {
-            id: post.createdBy.id,
-            name: post.createdBy.fullName,
-            avatar: post.createdBy.profilePictureUrl,
-          },
+          owner: post.createdById,
           stars: 0, // Default value since no stars are provided
           forks: 0, // Default value since no forks are provided
           skill: post.skills,
@@ -62,7 +58,10 @@ const Projects = () => {
 
   const handleCreateSuccess = () => {
     // Re-fetch projects to include the newly created one
-    api.get('/api/posts').then((response) => setProjects(response.data));
+    api.get('/api/posts').then((response) => {
+      console.log(response.data)
+      setProjects(response.data)
+    });
   };
 
 

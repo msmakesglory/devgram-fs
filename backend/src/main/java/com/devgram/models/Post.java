@@ -38,7 +38,7 @@ public class Post {
     @Column(nullable = false, updatable = false)
     private LocalDateTime timestamp;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "post_skill",
             joinColumns = @JoinColumn(name = "post_id"),
@@ -46,7 +46,7 @@ public class Post {
     )
     private List<Skill> skills = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "post_collaborators",
             joinColumns = @JoinColumn(name = "post_id"),

@@ -1,7 +1,8 @@
 package com.devgram.controllers;
 
 
-import com.devgram.models.Post;
+import com.devgram.dto.request.PostReqDto;
+import com.devgram.dto.response.PostResDto;
 import com.devgram.services.PostsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,46 +21,42 @@ public class PostsController {
         this.postsService = postsService;
     }
 
-
     @GetMapping
-    public ResponseEntity<List<Post>> getAllPosts() {
-        Optional<List<Post>> posts = postsService.getPosts();
-        return posts.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
+    public ResponseEntity<List<PostResDto>> getAllPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        List<PostResDto> posts = postsService.getPaginatedPosts(page, size);
+        if (posts.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> getPostById(@PathVariable UUID id) {
-        Optional<Post> post = postsService.getPost(id.toString());
+    public ResponseEntity<PostResDto> getPostById(@PathVariable UUID id) {
+        Optional<PostResDto> post = postsService.getPost(id.toString());
         return post.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<String> addPost(@RequestBody Post post) {
-        boolean success = postsService.addNewPost(post);
-        if (success) {
-            return ResponseEntity.ok("Post created successfully.");
-        } else {
-            return ResponseEntity.badRequest().body("Failed to create post.");
-        }
+    public ResponseEntity<String> addPost(@RequestBody PostReqDto dto) {
+        boolean success = postsService.addNewPost(dto);
+        if (success) return ResponseEntity.ok("Post created successfully.");
+        return ResponseEntity.badRequest().body("Failed to create post.");
     }
 
-    @PutMapping
-    public ResponseEntity<String> updatePost(@RequestBody Post post) {
-        boolean success = postsService.updatePost(post);
-        if (success) {
-            return ResponseEntity.ok("Post updated successfully.");
-        } else {
-            return ResponseEntity.badRequest().body("Failed to update post.");
-        }
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updatePost(@PathVariable UUID id, @RequestBody PostReqDto dto) {
+        boolean success = postsService.updatePost(id, dto);
+        if (success) return ResponseEntity.ok("Post updated successfully.");
+        return ResponseEntity.badRequest().body("Failed to update post.");
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> deletePost(@RequestBody Post post) {
-        boolean success = postsService.deletePost(post);
-        if (success) {
-            return ResponseEntity.ok("Post deleted successfully.");
-        } else {
-            return ResponseEntity.badRequest().body("Failed to delete post.");
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletePost(@PathVariable UUID id) {
+        boolean success = postsService.deletePost(id);
+        if (success) return ResponseEntity.ok("Post deleted successfully.");
+        return ResponseEntity.badRequest().body("Failed to delete post.");
     }
 }
