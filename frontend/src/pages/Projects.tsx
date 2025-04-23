@@ -6,6 +6,7 @@ import Button from '@/components/ui/CustomButton';
 import { Search, Filter, Plus } from 'lucide-react';
 import ProjectCard from '@/components/projects/ProjectCard'; // Import the new ProjectCard component
 import api from '@/api/api'; // Import the API client
+import CreateProjectModal from '@/components/projects/CreateProjectModal';
 
 // Categories for projects
 const categories = [
@@ -42,7 +43,7 @@ const Projects = () => {
           },
           stars: 0, // Default value since no stars are provided
           forks: 0, // Default value since no forks are provided
-          skill: ['ReactJS'], // Default tech stack based on the title
+          skill: post.skills,
           contributors: 5, // Default value since no contributors are provided
           openIssues: 0, // Default value since no issues are provided
           githubUrl: 'https://github.com/example', // Add a default GitHub URL (you can modify this later)
@@ -58,6 +59,12 @@ const Projects = () => {
 
     fetchProjects();
   }, []);
+
+  const handleCreateSuccess = () => {
+    // Re-fetch projects to include the newly created one
+    api.get('/api/posts').then((response) => setProjects(response.data));
+  };
+
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -88,13 +95,7 @@ const Projects = () => {
               <span>Filter</span>
             </button>
 
-            <Button
-              variant="primary"
-              className="h-12"
-              icon={<Plus size={18} />}
-            >
-              Create Project
-            </Button>
+            <CreateProjectModal onCreateSuccess={handleCreateSuccess}/>
           </div>
         </div>
 
@@ -133,7 +134,6 @@ const Projects = () => {
         )}
       </main>
 
-      <Footer />
     </div>
   );
 };

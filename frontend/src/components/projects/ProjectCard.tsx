@@ -3,6 +3,11 @@ import React from 'react';
 import { Star, GitFork, Github } from 'lucide-react';
 import Button from '@/components/ui/CustomButton';
 
+interface Skill {
+  skillId: number;
+  skillName: string | null; // Allow null in case the backend doesn't provide a name
+}
+
 interface Project {
   id: string;
   name: string;
@@ -14,10 +19,12 @@ interface Project {
   };
   stars: number;
   forks: number;
-  skill: string[];
+  tech: string[];
   contributors: number;
   lastUpdated: string;
+  isStarred: boolean;
   githubUrl: string; // New field for GitHub URL
+  skills?: Skill[]; // Make skills optional
 }
 
 interface ProjectCardProps {
@@ -46,6 +53,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           />
           <span className="text-sm text-foreground/70">{project.owner.name}</span>
         </div>
+
+        {/* Star Button */}
+        <button
+          className={`p-1.5 rounded-full transition-colors ${
+            project.isStarred
+              ? 'text-yellow-500 bg-yellow-100 dark:bg-yellow-900/20'
+              : 'text-foreground/60 hover:bg-secondary/70 hover:text-foreground'
+          }`}
+        >
+          <Star size={16} className={project.isStarred ? 'fill-yellow-500' : ''} />
+        </button>
       </div>
 
       {/* Project Title */}
@@ -56,17 +74,20 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
       {/* Tech Stack */}
       <div className="flex flex-wrap gap-2 mb-4">
-        {project.skill.slice(0, 3).map((skill, i) => (
-          <span
-            key={i}
-            className="px-2 py-1 bg-secondary/60 dark:bg-secondary/40 rounded-md text-xs font-medium"
-          >
-            {skill}
-          </span>
-        ))}
-        {project.skill.length > 3 && (
+        {(project.skills ?? []) // Provide a fallback empty array
+          .filter((skill) => skill.skillName !== null) // Filter out null skillNames
+          .slice(0, 3) // Show up to 3 skills
+          .map((skill, i) => (
+            <span
+              key={i}
+              className="px-2 py-1 bg-secondary/60 dark:bg-secondary/40 rounded-md text-xs font-medium"
+            >
+              {skill.skillName || 'Unknown Skill'}
+            </span>
+          ))}
+        {project.skills && project.skills.length > 3 && (
           <span className="px-2 py-1 bg-secondary/60 dark:bg-secondary/40 rounded-md text-xs font-medium">
-            +{project.skill.length - 3}
+            +{project.skills.length - 3}
           </span>
         )}
       </div>
@@ -83,8 +104,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
             {project.forks}
           </span>
         </div>
-
-        {/* <span>Updated {formatDate(project.lastUpdated)}</span> */}
+{/* 
+        <span>Updated {formatDate(project.lastUpdated)}</span> */}
       </div>
 
       {/* Contributors and GitHub Link */}
