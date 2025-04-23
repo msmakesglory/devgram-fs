@@ -70,9 +70,6 @@ const Profile = () => {
         <div className="mb-8">
           <div className="flex border-b border-border mb-6">
             <button className="px-4 py-3 text-blue-500 border-b-2 border-blue-500 font-medium">
-              Posts
-            </button>
-            <button className="px-4 py-3 text-foreground/60 hover:text-foreground smooth-transition">
               Projects
             </button>
             <button className="px-4 py-3 text-foreground/60 hover:text-foreground smooth-transition">
