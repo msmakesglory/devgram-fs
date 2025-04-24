@@ -5,6 +5,7 @@ import com.devgram.repos.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,7 +19,11 @@ public class SkillService {
     }
 
     public List<Skill> addSkills(List<Skill> skills) {
-        return skillRepository.saveAll(skills);
+        try{
+            return skillRepository.saveAll(skills);
+        }catch (Exception e){
+            return new ArrayList<>();
+        }
     }
 
     public Skill addSkill(String skillName) {

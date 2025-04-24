@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "skills")
@@ -22,6 +23,18 @@ public class Skill {
     @Column(nullable = false, unique = true)
     private String skillName;
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Skill skill = (Skill) o;
+        return Objects.equals(getSkillName(), skill.getSkillName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getSkillName());
+    }
+}
 //    @ManyToMany(mappedBy = "skills",
 //            fetch = FetchType.LAZY,
 //            cascade = {
@@ -32,5 +45,3 @@ public class Skill {
 //            }
 //    )
 //    private List<MyUser> users = new ArrayList<>();
-
-}

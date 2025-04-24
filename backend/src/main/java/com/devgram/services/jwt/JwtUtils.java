@@ -22,7 +22,7 @@ public class JwtUtils {
 
     JwtUtils() {
         this.SECRET_KEY = "da235a3e58003999655e294051d862a4015fae42b93dc304f73398e30b228ca8";
-        this.EXPIRATION_TIME = (long)(24*60*60*100);
+        this.EXPIRATION_TIME = (long)(24*60*60*1000*7);
     }
 
     public String generateToken(String userName) {

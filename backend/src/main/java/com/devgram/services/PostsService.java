@@ -1,7 +1,9 @@
 package com.devgram.services;
 
+import com.devgram.dto.interfaces.PostFlatData;
 import com.devgram.dto.request.PostReqDto;
 import com.devgram.dto.response.PostResDto;
+import com.devgram.dto.response.UserResDto;
 import com.devgram.models.MyUser;
 import com.devgram.models.Post;
 import com.devgram.models.Skill;
@@ -42,12 +44,40 @@ public class PostsService {
 
 
     public List<PostResDto> getPaginatedPosts(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return postRepository.findAll(pageable)
-                .stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+        int offset = page * size;
+        List<PostFlatData> flatDataList = postRepository.getPaginatedPosts(offset, size);
+        Map<UUID, PostResDto> postMap = new LinkedHashMap<>();
+
+        for (PostFlatData flat : flatDataList) {
+            UUID postId = flat.getPostId();
+
+            PostResDto dto = postMap.computeIfAbsent(postId, id -> {
+                UserResDto userDto = new UserResDto();
+                userDto.setId(flat.getUserId());
+                userDto.setFullName(flat.getFullName());
+                userDto.setProfilePictureUrl(flat.getProfilePictureUrl());
+
+                return new PostResDto(
+                        flat.getPostId(),
+                        flat.getTitle(),
+                        flat.getDescription(),
+                        flat.getTimestamp(),
+                        userDto,
+                        flat.getRepoLink(),
+                        0,
+                        new ArrayList<>(),
+                        new ArrayList<>()
+                );
+            });
+
+            if (flat.getSkillId() != null && !dto.getSkillIds().contains(flat.getSkillId())) {
+                dto.getSkillIds().add(flat.getSkillId());
+            }
+        }
+
+        return new ArrayList<>(postMap.values());
     }
+
 
 
     public boolean addNewPost(PostReqDto dto) {
@@ -57,6 +87,10 @@ public class PostsService {
         post.setTitle(dto.getTitle());
         post.setDescription(dto.getDescription());
         post.setCreatedBy(myUserService.getUser());
+        return fillPostWithDto(dto, post);
+    }
+
+    private boolean fillPostWithDto(PostReqDto dto, Post post) {
         post.setCollaborators(userRepository.findAllById(dto.getCollaboratorIds()));
         post.setRepoLink(dto.getRepoLink());
         List<Skill> skills = new ArrayList<>(skillRepository.findAllById(dto.getSkillIds()));
@@ -83,10 +117,7 @@ public class PostsService {
         post.setTitle(dto.getTitle());
         post.setDescription(dto.getDescription());
         post.setSkills(skillRepository.findAllById(dto.getSkillIds()));
-        post.setCollaborators(userRepository.findAllById(dto.getCollaboratorIds()));
-        post.setRepoLink(dto.getRepoLink());
-        postRepository.save(post);
-        return true;
+        return fillPostWithDto(dto, post);
     }
 
     public boolean deletePost(UUID id) {
@@ -103,6 +134,7 @@ public class PostsService {
                 post.getTimestamp(),
                 myUserService.convertToDto(post.getCreatedBy()),
                 post.getRepoLink(),
+                0,
                 post.getSkills().stream().map(Skill::getSkillId).collect(Collectors.toList()),
                 post.getCollaborators().stream().map(MyUser::getId).collect(Collectors.toList())
         );
