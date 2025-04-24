@@ -21,7 +21,7 @@ public class UserResDto {
     private String location;
     private String website;
     private Date joinDate;
-    private Integer projectCount;
-    private Integer impressionsCount;
+    private int projectCount;
+    private int impressionsCount;
     private List<Long> skillIds;
 }

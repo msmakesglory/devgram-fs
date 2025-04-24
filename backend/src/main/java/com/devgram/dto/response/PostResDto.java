@@ -17,7 +17,8 @@ public class PostResDto {
     private String title;
     private String description;
     private LocalDateTime timestamp;
-    private MyUser createdById;
+    private UserResDto createdById;
+    private String repoLink;
     private List<Long> skillIds;
     private List<UUID> collaboratorIds;
 }

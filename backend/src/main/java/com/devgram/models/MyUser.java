@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,8 +36,12 @@ public class MyUser implements UserDetails {
     private String website;
 
     private Date joinDate;
-    private Integer projectCount = 0;
-    private Integer impressionsCount = 0;
+
+    @ColumnDefault("0")
+    private Integer projectCount;
+
+    @ColumnDefault("0")
+    private Integer impressionsCount;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
@@ -44,7 +49,6 @@ public class MyUser implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
-
     private List<Skill> skills = new ArrayList<>();
 
     @Override
@@ -60,5 +64,14 @@ public class MyUser implements UserDetails {
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    public List<Long> getSkillIds() {
+        List<Long> skillIds = new ArrayList<>();
+        for (Skill skill : skills) {
+            skillIds.add(skill.getSkillId());
+        }
+
+        return skillIds;
     }
 }

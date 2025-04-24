@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,4 +21,10 @@ public class UserReqDto {
     private String website;
     private Date joinDate;
     private List<Long> skillIds;
+
+    void fix(){
+        if (this.skillIds == null){
+            this.skillIds = new ArrayList<>();
+        }
+    }
 }

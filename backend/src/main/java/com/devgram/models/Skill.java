@@ -22,15 +22,15 @@ public class Skill {
     @Column(nullable = false, unique = true)
     private String skillName;
 
-    @ManyToMany(mappedBy = "skills",
-            fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.PERSIST,
-                    CascadeType.REFRESH
-            }
-    )
-    private List<MyUser> users = new ArrayList<>();
+//    @ManyToMany(mappedBy = "skills",
+//            fetch = FetchType.LAZY,
+//            cascade = {
+//                    CascadeType.DETACH,
+//                    CascadeType.MERGE,
+//                    CascadeType.PERSIST,
+//                    CascadeType.REFRESH
+//            }
+//    )
+//    private List<MyUser> users = new ArrayList<>();
 
 }

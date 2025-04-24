@@ -1,6 +1,7 @@
 package com.devgram.services;
 
 
+import com.devgram.dto.response.UserResDto;
 import com.devgram.models.MyUser;
 import com.devgram.repos.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,9 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MyUserService implements UserDetailsService {
@@ -86,5 +85,22 @@ public class MyUserService implements UserDetailsService {
     MyUser getUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmail(username).orElseThrow(()->new UsernameNotFoundException("MyUser not found"));
+    }
+
+    UserResDto convertToDto(MyUser myUser) {
+        return new UserResDto(
+                myUser.getId(),
+                myUser.getFullName(),
+                myUser.getUsername(),
+                myUser.getEmail(),
+                myUser.getProfilePictureUrl(),
+                myUser.getBio(),
+                myUser.getLocation(),
+                myUser.getWebsite(),
+                myUser.getJoinDate(),
+                myUser.getProjectCount() == null ? 0 : myUser.getProjectCount(),
+                myUser.getImpressionsCount() == null ? 0 : myUser.getImpressionsCount(),
+                myUser.getSkillIds()
+        );
     }
 }

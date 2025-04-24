@@ -11,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SkillResDto {
-    private Long skillId;
+    private long skillId;
     private String skillName;
     private List<UUID> userIds;
 }

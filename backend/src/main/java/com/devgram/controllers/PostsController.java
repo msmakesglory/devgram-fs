@@ -41,6 +41,7 @@ public class PostsController {
 
     @PostMapping
     public ResponseEntity<String> addPost(@RequestBody PostReqDto dto) {
+        System.out.println(dto);
         boolean success = postsService.addNewPost(dto);
         if (success) return ResponseEntity.ok("Post created successfully.");
         return ResponseEntity.badRequest().body("Failed to create post.");

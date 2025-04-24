@@ -21,7 +21,9 @@ public class SkillService {
         return skillRepository.saveAll(skills);
     }
 
-    public Skill addSkill(Skill skill) {
+    public Skill addSkill(String skillName) {
+        Skill skill = new Skill();
+        skill.setSkillName(skillName.toLowerCase());
         return skillRepository.save(skill);
     }
 }

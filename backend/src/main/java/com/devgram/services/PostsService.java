@@ -22,12 +22,14 @@ public class PostsService {
     private final MyUserService myUserService;
     private final SkillRepository skillRepository;
     private final UserRepository userRepository;
+    private final SkillService skillService;
 
-    public PostsService(PostRepository postRepository, MyUserService myUserService, SkillRepository skillRepository, UserRepository userRepository) {
+    public PostsService(PostRepository postRepository, MyUserService myUserService, SkillRepository skillRepository, UserRepository userRepository, SkillService skillService) {
         this.postRepository = postRepository;
         this.myUserService = myUserService;
         this.skillRepository = skillRepository;
         this.userRepository = userRepository;
+        this.skillService = skillService;
     }
 
     public List<PostResDto> getPosts() {
@@ -49,20 +51,30 @@ public class PostsService {
 
 
     public boolean addNewPost(PostReqDto dto) {
-        if (dto == null) return false;
-
+//        this is to ensure quality
+        dto.fix();
         Post post = new Post();
         post.setTitle(dto.getTitle());
         post.setDescription(dto.getDescription());
         post.setCreatedBy(myUserService.getUser());
-        post.setSkills(skillRepository.findAllById(dto.getSkillIds()));
         post.setCollaborators(userRepository.findAllById(dto.getCollaboratorIds()));
+        post.setRepoLink(dto.getRepoLink());
+        List<Skill> skills = new ArrayList<>(skillRepository.findAllById(dto.getSkillIds()));
+
+        if(!dto.getNewSkills().isEmpty()) {
+            for(String skill : dto.getNewSkills()) {
+                skills.add(skillService.addSkill(skill));
+            }
+        }
+        post.setSkills(skills);
 
         postRepository.save(post);
         return true;
     }
 
     public boolean updatePost(UUID id, PostReqDto dto) {
+
+        dto.fix();
 
         Optional<Post> existing = postRepository.findById(id);
         if (existing.isEmpty()) return false;
@@ -72,7 +84,7 @@ public class PostsService {
         post.setDescription(dto.getDescription());
         post.setSkills(skillRepository.findAllById(dto.getSkillIds()));
         post.setCollaborators(userRepository.findAllById(dto.getCollaboratorIds()));
-
+        post.setRepoLink(dto.getRepoLink());
         postRepository.save(post);
         return true;
     }
@@ -89,7 +101,8 @@ public class PostsService {
                 post.getTitle(),
                 post.getDescription(),
                 post.getTimestamp(),
-                post.getCreatedBy(),
+                myUserService.convertToDto(post.getCreatedBy()),
+                post.getRepoLink(),
                 post.getSkills().stream().map(Skill::getSkillId).collect(Collectors.toList()),
                 post.getCollaborators().stream().map(MyUser::getId).collect(Collectors.toList())
         );

@@ -38,6 +38,9 @@ public class Post {
     @Column(nullable = false, updatable = false)
     private LocalDateTime timestamp;
 
+    @Column(length = 50)
+    private String repoLink;
+
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "post_skill",
