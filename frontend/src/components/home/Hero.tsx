@@ -40,7 +40,7 @@ const Hero = () => {
               variant="primary" 
               size="lg" 
               className="group"
-              onClick={userId ? () => navigate("/p") : () => navigate("/auth")}
+              onClick={userId ? () => navigate("/user") : () => navigate("/auth")}
             >
               Join the Community
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
@@ -49,6 +49,7 @@ const Hero = () => {
             <Button 
               variant="outline" 
               size="lg"
+              onClick={userId ? () => navigate("/projects") : () => navigate("/auth")}
             >
               Explore Projects
             </Button>

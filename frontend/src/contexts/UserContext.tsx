@@ -1,17 +1,13 @@
 import React, {createContext, Dispatch, ReactNode, SetStateAction, useContext, useState, useEffect} from "react";
 import User from "@/types/User";
 import api from "@/api/api.ts";
-
-interface UserContextType {
-    user: User | null;
-    setUser: Dispatch<SetStateAction<User | null>>;
-    userId: string | null;
-}
+import { UserContextType, Skill } from "@/types/types";
 
 const UserContext = createContext<UserContextType>({
     user: null,
-    setUser: () => {},
+    setUser: (value: SetStateAction<User | null>) => {},
     userId: null,
+    allSkills: null,
 })
 
 interface UserProviderProps {
@@ -21,6 +17,7 @@ interface UserProviderProps {
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [userId, setUserId] = useState<string | null>(null);
+    const [allSkills, setAllSkills] = useState< Array<Skill> | null>(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -38,10 +35,24 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         fetchUserData();
     }, []);
 
+    useEffect(() => {
+        const fetchAllSkills = async () => {
+            try {
+                const res = await api.get("/api/skills");
+                console.log(res.data, res.status);
+                setAllSkills(res.data);
+                console.log("skills: " + allSkills);
+            } catch (err) {
+                console.error('Failed to fetch "skills" from server', err);
+            }
+        }
+        fetchAllSkills();
+    }, []);
+
     
 
     return (
-        <UserContext.Provider value={{user, setUser, userId}} >
+        <UserContext.Provider value={{user, setUser, userId, allSkills}} >
             {children}
         </UserContext.Provider>
     )

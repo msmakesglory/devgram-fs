@@ -12,9 +12,9 @@ import Profile from "./pages/Profile";
 import Chat from "./pages/Chat";
 import Projects from "./pages/Projects";
 import NotFound from "./pages/NotFound";
-import UserPage from "@/test/dashboard.tsx";
 import { UserProvider } from "./contexts/UserContext";
 import Developers from "./pages/Developers";
+import Test from "./test/test";
 
 const queryClient = new QueryClient();
 
@@ -36,7 +36,7 @@ const App = () => (
               <Route path="/profile/:id" element={<Profile />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/developers" element={<Developers />} />
-            
+              <Route path="/test" element={<Test />} />
             </Routes>
           </BrowserRouter>
         </UserProvider>
