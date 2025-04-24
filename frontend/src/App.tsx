@@ -14,6 +14,7 @@ import Projects from "./pages/Projects";
 import NotFound from "./pages/NotFound";
 import UserPage from "@/test/dashboard.tsx";
 import { UserProvider } from "./contexts/UserContext";
+import Developers from "./pages/Developers";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="/feed" element={<Feed />} />
               <Route path="/profile/:id" element={<Profile />} />
               <Route path="/chat" element={<Chat />} />
+              <Route path="/developers" element={<Developers />} />
             
             </Routes>
           </BrowserRouter>
