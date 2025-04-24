@@ -1,4 +1,3 @@
-// pages/projects.tsx
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -30,21 +29,26 @@ const Projects = () => {
       try {
         const response = await api.get('/api/posts'); // Fetch posts from the backend
         const fetchedProjects = response.data;
-        console.log(fetchedProjects);
+  
         // Transform the data to match the expected format
         const formattedProjects = fetchedProjects.map((post) => ({
-          id: post.postId,
-          name: post.title,
+          postId: post.postId,
+          title: post.title,
           description: post.description,
-          owner: post.createdById,
+          timestamp: post.timestamp,
+          owner: {
+            id: post.createdById.id,
+            fullName: post.createdById.fullName,
+            profilePictureUrl: post.createdById.profilePictureUrl,
+          },
+          skillIds: post.skillIds || [], // Default to []
+          collaboratorIds: Array.isArray(post.collaboratorIds) ? post.collaboratorIds : [],
+          githubUrl: post.repoLink || null, // Use repoLink or null if not available
           stars: 0, // Default value since no stars are provided
           forks: 0, // Default value since no forks are provided
-          skill: post.skills,
-          contributors: 5, // Default value since no contributors are provided
-          openIssues: 0, // Default value since no issues are provided
-          githubUrl: 'https://github.com/example', // Add a default GitHub URL (you can modify this later)
+          isStarred: false, // Default value
         }));
-
+  
         setProjects(formattedProjects);
         setLoading(false);
       } catch (error) {
@@ -52,18 +56,47 @@ const Projects = () => {
         setLoading(false);
       }
     };
-
+  
     fetchProjects();
   }, []);
+
+  
 
   const handleCreateSuccess = () => {
     // Re-fetch projects to include the newly created one
     api.get('/api/posts').then((response) => {
-      console.log(response.data)
-      setProjects(response.data)
+      const fetchedProjects = response.data;
+      const formattedProjects = fetchedProjects.map((post) => ({
+        postId: post.postId,
+        title: post.title,
+        description: post.description,
+        timestamp: post.timestamp,
+        owner: {
+          id: post.createdById.id,
+          fullName: post.createdById.fullName,
+          profilePictureUrl: post.createdById.profilePictureUrl,
+        },
+        skillIds: post.skillIds || [], // Default to [] if skillIds is invalid
+        collaboratorIds: post.collaboratorIds || [],
+        githubUrl: post.repoLink || null,
+        stars: 0,
+        forks: 0,
+        isStarred: false,
+      }));
+      setProjects(formattedProjects);
     });
   };
 
+  const testing = (projects) => {
+    projects.forEach((post) => {
+      console.log('Post ID:', post.postId);
+      console.log('Skill IDs:', post.skillIds);
+      console.log('Type of Skill IDs:', typeof post.skillIds);
+      console.log('Is Array:', Array.isArray(post.skillIds));
+    });
+  };
+  
+  testing(projects);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -94,7 +127,7 @@ const Projects = () => {
               <span>Filter</span>
             </button>
 
-            <CreateProjectModal onCreateSuccess={handleCreateSuccess}/>
+            <CreateProjectModal onCreateSuccess={handleCreateSuccess} />
           </div>
         </div>
 
@@ -124,15 +157,13 @@ const Projects = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
               <ProjectCard
-                key={project.id}
+                key={project.postId}
                 project={project}
-                // style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'forwards' }}
               />
             ))}
           </div>
         )}
       </main>
-
     </div>
   );
 };

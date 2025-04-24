@@ -10,5 +10,5 @@ export interface UserContextType {
     user: User | null;
     setUser: Dispatch<SetStateAction<User | null>>;
     userId: string | null;
-    allSkills: Array<Skill> | null;
+    allSkills: Skill[] | null;
 }

@@ -7,7 +7,7 @@ const UserContext = createContext<UserContextType>({
     user: null,
     setUser: (value: SetStateAction<User | null>) => {},
     userId: null,
-    allSkills: null,
+    allSkills: [],
 })
 
 interface UserProviderProps {
@@ -17,13 +17,13 @@ interface UserProviderProps {
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [userId, setUserId] = useState<string | null>(null);
-    const [allSkills, setAllSkills] = useState< Array<Skill> | null>(null);
+    const [allSkills, setAllSkills] = useState<Skill[] | null>([]);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const response = await api.get("/user/me");
-                console.log(response.data)
+                // console.log(response.data)
                 setUser(response.data); // Set the user data once fetched
                 setUserId(response.data.id);
             } catch (err) {
@@ -39,9 +39,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         const fetchAllSkills = async () => {
             try {
                 const res = await api.get("/api/skills");
-                console.log(res.data, res.status);
+                // console.log(res.data, res.status);
                 setAllSkills(res.data);
-                console.log("skills: " + allSkills);
             } catch (err) {
                 console.error('Failed to fetch "skills" from server', err);
             }
@@ -49,6 +48,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         fetchAllSkills();
     }, []);
 
+    
     
 
     return (
