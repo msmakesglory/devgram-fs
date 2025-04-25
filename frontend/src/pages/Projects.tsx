@@ -87,17 +87,6 @@ const Projects = () => {
     });
   };
 
-  const testing = (projects) => {
-    projects.forEach((post) => {
-      console.log('Post ID:', post.postId);
-      console.log('Skill IDs:', post.skillIds);
-      console.log('Type of Skill IDs:', typeof post.skillIds);
-      console.log('Is Array:', Array.isArray(post.skillIds));
-    });
-  };
-  
-  testing(projects);
-
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />

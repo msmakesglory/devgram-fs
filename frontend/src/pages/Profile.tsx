@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ProfileCard from '@/components/profile/ProfileCard';
 import PostCard from '@/components/posts/PostCard';
+import ProjectCard from '@/components/projects/ProjectCard';
 import Button from '@/components/ui/CustomButton';
 import { useUserContext } from '@/contexts/UserContext';
+import api from '@/api/api';
 
 const posts = [
   {
@@ -33,8 +35,54 @@ const projects = [
   },
 ];
 
+
+
+
 const Profile = () => {
-  const { user } = useUserContext();
+  const { user, allSkills } = useUserContext();
+  const [projects, setProjects] = useState([]);
+  const [ activeTab, setActiveTab ] = useState("projects");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [log, setLog] = useState(false);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      if (!user.id) return;
+      try {
+        const response = await api.get(`/api/posts/u/${user.id}`);
+        const fetchedProjects = response.data;
+  
+        // Transform the data to match the expected format
+        const formattedProjects = fetchedProjects.map((post) => ({
+          postId: post.postId,
+          title: post.title,
+          description: post.description,
+          timestamp: post.timestamp,
+          owner: {
+            id: user.id,
+            fullName: user.fullName,
+            profilePictureUrl: user.profilePictureUrl,
+          },
+          skillIds: post.skillIds || [], // Default to []
+          collaboratorIds: Array.isArray(post.collaboratorIds) ? post.collaboratorIds : [],
+          githubUrl: post.repoLink || null, // Use repoLink or null if not available
+          stars: 0, // Default value since no stars are provided
+          forks: 0, // Default value since no forks are provided
+          isStarred: false, // Default value
+        }));
+  
+        setProjects(formattedProjects);
+        setLog(true);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        setLoading(false);
+      }
+    };
+  
+    fetchProjects();
+  }, [user]);
+
 
   // Handle case where user is null
   if (!user) {
@@ -59,100 +107,95 @@ const Profile = () => {
     profilePictureUrl: user.profilePictureUrl || "https://via.placeholder.com/150", // Default placeholder image
   };
 
+  
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <main className="flex-grow py-24 px-4 sm:px-6 max-w-screen-xl mx-auto">
+      <main className="w-full flex-grow py-24 px-4 sm:px-6 max-w-screen-xl mx-auto">
         {/* Pass the updated profileData to ProfileCard */}
         <ProfileCard {...profileData} className="mb-8" />
 
-        <div className="mb-8">
-          <div className="flex border-b border-border mb-6">
-            <button className="px-4 py-3 text-blue-500 border-b-2 border-blue-500 font-medium">
+        <div className='mb-8'>
+          <div className='flex border-b border-border mb-6'>
+            {/* Tab Buttons */}
+            <button
+              onClick={() => setActiveTab('projects')}
+              className={`px-4 py-3 font-medium ${
+                activeTab === 'projects'
+                  ? 'text-blue-500 border-b-2 border-blue-500'
+                  : 'text-foreground/60 hover:text-foreground smooth-transition'
+              }`}
+            >
               Projects
             </button>
-            <button className="px-4 py-3 text-foreground/60 hover:text-foreground smooth-transition">
+
+            <button
+              onClick={() => setActiveTab('about')}
+              className={`px-4 py-3 font-medium ${
+                activeTab === 'about'
+                  ? 'text-blue-500 border-b-2 border-blue-500'
+                  : 'text-foreground/60 hover:text-foreground smooth-transition'
+              }`}
+            >
               About
             </button>
           </div>
 
+          {/* Tab Content */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Main content - Posts */}
-            <div className="md:col-span-2 space-y-6">
-              {posts.map((post) => (
-                <PostCard
-                  key={post.id}
-                  id={post.id}
-                  user={post.user}
-                  content={post.content}
-                  timestamp={post.timestamp}
-                  likes={post.likes}
-                  comments={post.comments}
-                  isLiked={post.isLiked}
-                  className="animate-fade-in"
-                />
-              ))}
-            </div>
-
-            {/* Sidebar - Projects */}
-            <div className="md:col-span-1">
-              <div className="glass-card">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold">Projects</h3>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-sm text-blue-500"
-                  >
-                    View all
-                  </Button>
-                </div>
-
-                <div className="space-y-4">
-                  {projects.map((project) => (
-                    <div
-                      key={project.id}
-                      className="p-4 bg-secondary/40 rounded-lg hover:bg-secondary/60 transition-colors"
-                    >
-                      <h4 className="font-medium mb-1">{project.name}</h4>
-                      <p className="text-sm text-foreground/70 mb-2">
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {project.tech.map((tech, i) => (
-                          <span
-                            key={i}
-                            className="px-2 py-1 bg-background/60 rounded-md text-xs"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                      <div className="mt-2 text-sm text-foreground/60 flex items-center">
-                        <span className="flex items-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="w-4 h-4 mr-1"
-                          >
-                            <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
-                          </svg>
-                          {project.stars}
-                        </span>
-                      </div>
+            {/* Main content - Conditional Rendering */}
+            <div className="md:col-span-3 space-y-6">
+              {activeTab === 'projects' && (
+                <div className="space-y-6">
+                  <h3 className="font-semibold text-lg">Projects</h3>
+                  {loading ? (
+                    <p className="text-sm text-foreground/70">Loading projects...</p>
+                  ) : projects.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {projects.map((project) => (
+                        <ProjectCard
+                          key={project.postId}
+                          project={{ ...project, allSkills }}
+                        />
+                      ))}
                     </div>
-                  ))}
+                  ) : (
+                    <p className="text-sm text-foreground/70">No projects available.</p>
+                  )}
                 </div>
-              </div>
+              )}
+
+              {activeTab === 'about' && (
+                <div className="glass-card p-6 space-y-4">
+                  <h3 className="font-semibold">About</h3>
+                  <p className="text-sm text-foreground/70">{profileData.bio}</p>
+                  <p className="text-sm text-foreground/70">
+                    <strong>Location:</strong> {profileData.location}
+                  </p>
+                  <p className="text-sm text-foreground/70">
+                    <strong>Website:</strong>{' '}
+                    {profileData.website ? (
+                      <a href={profileData.website} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                        {profileData.website}
+                      </a>
+                    ) : (
+                      'Not provided'
+                    )}
+                  </p>
+                  <p className="text-sm text-foreground/70">
+                    <strong>Joined:</strong> {new Date(profileData.joinDate).toLocaleDateString()}
+                  </p>
+                  <p className="text-sm text-foreground/70">
+                    <strong>Skills:</strong> {profileData.skills.join(', ')}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
+
       </main>
 
       <Footer />
