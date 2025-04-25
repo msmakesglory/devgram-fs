@@ -60,4 +60,13 @@ public class PostsController {
         if (success) return ResponseEntity.ok("Post deleted successfully.");
         return ResponseEntity.badRequest().body("Failed to delete post.");
     }
+
+    @GetMapping("/u/{userId}")
+    public ResponseEntity<List<PostResDto>> getPostsByUserId(@PathVariable UUID userId) {
+        List<PostResDto> posts = postsService.getPostsByUserId(userId);
+        if (posts.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(posts);
+    }
 }

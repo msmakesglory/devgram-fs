@@ -139,4 +139,75 @@ public class PostsService {
                 post.getCollaborators().stream().map(MyUser::getId).collect(Collectors.toList())
         );
     }
+
+    public List<PostResDto> getPostsByUserId(UUID userId) {
+        // Fetch all flat data for the user's posts
+        List<PostFlatData> flatDataList = postRepository.findByCreatedById(userId);
+
+        // Group flat data by postId
+        Map<UUID, PostResDto> postMap = new LinkedHashMap<>();
+        for (PostFlatData flatData : flatDataList) {
+            UUID postId = flatData.getPostId();
+
+            // Create a new PostResDto if it doesn't already exist
+            PostResDto dto = postMap.computeIfAbsent(postId, id -> {
+                PostResDto newDto = new PostResDto();
+                newDto.setPostId(id);
+                newDto.setTitle(flatData.getTitle());
+                newDto.setDescription(flatData.getDescription());
+                newDto.setTimestamp(flatData.getTimestamp());
+
+                UserResDto userResDto = new UserResDto();
+                userResDto.setId(flatData.getUserId());
+                userResDto.setFullName(flatData.getFullName());
+                userResDto.setProfilePictureUrl(flatData.getProfilePictureUrl());
+
+                newDto.setCreatedById(userResDto);
+                newDto.setRepoLink(flatData.getRepoLink());
+                newDto.setSkillIds(new ArrayList<>());
+                newDto.setCollaboratorIds(new ArrayList<>());
+
+                return newDto;
+            });
+
+            // Add skillId and collaboratorId to the respective lists
+            if (flatData.getSkillId() != null) {
+                dto.getSkillIds().add(flatData.getSkillId());
+            }
+            if (flatData.getCollaboratorId() != null) {
+                dto.getCollaboratorIds().add(flatData.getCollaboratorId());
+            }
+        }
+
+        // Return the grouped posts as a list
+        return new ArrayList<>(postMap.values());
+    }
+
+    private PostResDto mapToPostResDto(PostFlatData flatData, MyUser user) {
+        PostResDto dto = new PostResDto();
+        dto.setPostId(flatData.getPostId());
+        dto.setTitle(flatData.getTitle());
+        dto.setDescription(flatData.getDescription());
+        dto.setTimestamp(flatData.getTimestamp());
+
+        UserResDto userResDto = new UserResDto();
+        userResDto.setId(flatData.getUserId());
+        userResDto.setFullName(flatData.getFullName());
+        userResDto.setProfilePictureUrl(flatData.getProfilePictureUrl());
+
+        dto.setCreatedById(userResDto);
+        dto.setRepoLink(flatData.getRepoLink());
+
+        // Include all skills of the user
+        dto.setSkillIds(user.getSkillIds());
+
+        // Add collaborator ID (if present)
+        if (flatData.getCollaboratorId() != null) {
+            dto.setCollaboratorIds(Collections.singletonList(flatData.getCollaboratorId()));
+        } else {
+            dto.setCollaboratorIds(Collections.emptyList());
+        }
+
+        return dto;
+    }
 }
