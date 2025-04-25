@@ -3,6 +3,7 @@ package com.devgram.controllers;
 
 import com.devgram.dto.request.PostReqDto;
 import com.devgram.dto.response.PostResDto;
+import com.devgram.dto.response.UserPostResDto;
 import com.devgram.services.PostsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -62,8 +63,8 @@ public class PostsController {
     }
 
     @GetMapping("/u/{userId}")
-    public ResponseEntity<List<PostResDto>> getPostsByUserId(@PathVariable UUID userId) {
-        List<PostResDto> posts = postsService.getPostsByUserId(userId);
+    public ResponseEntity<List<UserPostResDto>> getPostsByUserId(@PathVariable UUID userId) {
+        List<UserPostResDto> posts = postsService.getPostsByUserId(userId);
         if (posts.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

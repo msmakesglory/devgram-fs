@@ -1,9 +1,11 @@
 package com.devgram.services;
 
 import com.devgram.dto.interfaces.PostFlatData;
+import com.devgram.dto.interfaces.UserPostFlatData;
 import com.devgram.dto.request.PostReqDto;
 import com.devgram.dto.response.PostResDto;
 import com.devgram.dto.response.UserResDto;
+import com.devgram.dto.response.UserPostResDto;
 import com.devgram.models.MyUser;
 import com.devgram.models.Post;
 import com.devgram.models.Skill;
@@ -11,8 +13,6 @@ import com.devgram.repos.PostRepository;
 import com.devgram.repos.SkillRepository;
 import com.devgram.repos.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -140,31 +140,22 @@ public class PostsService {
         );
     }
 
-    public List<PostResDto> getPostsByUserId(UUID userId) {
+    public List<UserPostResDto> getPostsByUserId(UUID userId) {
         // Fetch all flat data for the user's posts
-        List<PostFlatData> flatDataList = postRepository.findByCreatedById(userId);
+        List<UserPostFlatData> flatDataList = postRepository.findByCreatedById(userId);
 
         // Group flat data by postId
-        Map<UUID, PostResDto> postMap = new LinkedHashMap<>();
-        for (PostFlatData flatData : flatDataList) {
+        Map<UUID, UserPostResDto> postMap = new LinkedHashMap<>();
+        for (UserPostFlatData flatData : flatDataList) {
             UUID postId = flatData.getPostId();
 
             // Create a new PostResDto if it doesn't already exist
-            PostResDto dto = postMap.computeIfAbsent(postId, id -> {
-                PostResDto newDto = new PostResDto();
+            UserPostResDto dto = postMap.computeIfAbsent(postId, id -> {
+                UserPostResDto newDto = new UserPostResDto();
                 newDto.setPostId(id);
                 newDto.setTitle(flatData.getTitle());
                 newDto.setDescription(flatData.getDescription());
                 newDto.setTimestamp(flatData.getTimestamp());
-
-                UserResDto userResDto = new UserResDto();
-                userResDto.setId(flatData.getUserId());
-                userResDto.setFullName(flatData.getFullName());
-                userResDto.setUserName(flatData.getUserName());
-                userResDto.setEmail(flatData.getEmail());
-                userResDto.setProfilePictureUrl(flatData.getProfilePictureUrl());
-
-                newDto.setCreatedById(userResDto);
                 newDto.setRepoLink(flatData.getRepoLink());
                 newDto.setSkillIds(new ArrayList<>());
                 newDto.setCollaboratorIds(new ArrayList<>());
