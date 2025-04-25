@@ -14,35 +14,56 @@ import Projects from "./pages/Projects";
 import NotFound from "./pages/NotFound";
 import { UserProvider } from "./contexts/UserContext";
 import Developers from "./pages/Developers";
-import Test from "./test/test";
+import PostForm from "@/pages/PostForm.tsx";
+import {useEffect, useState} from "react";
+import api from "@/api/api.ts";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+const App = () => {
+  const [skills, setSkills] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const defaultUserId = '223e4567-e89b-12d3-a456-426614174001'; // get this from auth in real use
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const res = await api.get('/api/skills');
+        setSkills(res.data);
+      } catch (err) {
+        console.error('Failed to fetch skills:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSkills();
+  }, []);
+
+  return <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
         <UserProvider>
-          <Toaster />
-          <Sonner />
+          <Toaster/>
+          <Sonner/>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/user" element={<Profile />} />
-              <Route path="*" element={<NotFound/>} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/feed" element={<Feed />} />
-              <Route path="/profile/:id" element={<Profile />} />
-              <Route path="/chat" element={<Chat />} />
-              <Route path="/developers" element={<Developers />} />
-              <Route path="/test" element={<Test />} />
+              <Route path="/" element={<Index/>}/>
+              <Route path="/user" element={<Profile/>}/>
+              <Route path="*" element={<NotFound/>}/>
+              <Route path="/projects" element={<Projects/>}/>
+              <Route path="/auth" element={<Auth/>}/>
+              <Route path="/feed" element={<Feed/>}/>
+              <Route path="/profile/:id" element={<Profile/>}/>
+              <Route path="/chat" element={<Chat/>}/>
+              <Route path="/developers" element={<Developers/>}/>
+              <Route path="/test" element={<PostForm availableSkills={skills} defaultUserId={''} onSuccess={()=>{}}/>}/>
             </Routes>
           </BrowserRouter>
         </UserProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
-);
+};
 
 export default App;
