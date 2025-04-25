@@ -160,6 +160,8 @@ public class PostsService {
                 UserResDto userResDto = new UserResDto();
                 userResDto.setId(flatData.getUserId());
                 userResDto.setFullName(flatData.getFullName());
+                userResDto.setUserName(flatData.getUserName());
+                userResDto.setEmail(flatData.getEmail());
                 userResDto.setProfilePictureUrl(flatData.getProfilePictureUrl());
 
                 newDto.setCreatedById(userResDto);

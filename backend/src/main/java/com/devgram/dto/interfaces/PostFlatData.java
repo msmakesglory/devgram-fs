@@ -13,6 +13,8 @@ public interface PostFlatData {
     UUID getUserId();
     String getFullName();
     String getProfilePictureUrl();
+    String getEmail();
+    String getUserName();
 
     Long getSkillId();
     UUID getCollaboratorId();

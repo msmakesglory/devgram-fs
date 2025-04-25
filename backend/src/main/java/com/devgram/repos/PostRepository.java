@@ -44,6 +44,8 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
           p.repo_link AS repoLink,
           u.id AS userId,
           u.full_name AS fullName,
+          u.email AS email,
+          u.user_name AS userName,
           u.profile_picture_url AS profilePictureUrl,
           ps.skill_id AS skillId,
           pc.user_id AS collaboratorId
