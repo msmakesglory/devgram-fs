@@ -17,7 +17,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const { user } = useUserContext();
+  const { user, userId } = useUserContext();
   const navigate = useNavigate();
   const location = useLocation();
   const currentRoute = location.pathname;
@@ -160,7 +160,7 @@ const Navbar = () => {
                     </div>
                     <div >
                       <p className="font-medium">{user.fullName}</p>
-                      <p className="text-sm text-foreground/60"  onClick={() => navigate("/user")}>View profile</p>
+                      <p className="text-sm text-foreground/60"  onClick={() => navigate(`/u/${userId}`)}>View profile</p>
                     </div>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />

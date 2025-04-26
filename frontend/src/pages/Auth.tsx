@@ -9,7 +9,7 @@ import { useAuth } from '@/contexts/AuthContext';
 const Auth = () => {
   const { user, loading } = useAuth();
   
-  // Redirect if already logged in
+  // Redirect if already logged in=
   if (!loading && user) {
     return <Navigate to="/feed" />;
   }

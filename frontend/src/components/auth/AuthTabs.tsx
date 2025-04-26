@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {Sun, Github, GithubIcon, Globe} from 'lucide-react';
 import GitHubOAuth from "@/test/Github.tsx";
@@ -7,7 +6,7 @@ import Google from "@/test/Google.tsx";
 
 
 const Auth = () => {
-  const navigate = useNavigate();
+  
 
 
   return (

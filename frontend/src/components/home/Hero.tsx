@@ -1,6 +1,4 @@
-import React from 'react';
 import { ArrowRight, Code, Users, GitBranch } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import Button from '../ui/CustomButton';
 import { useUserContext } from '@/contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
@@ -39,8 +37,10 @@ const Hero = () => {
             <Button 
               variant="primary" 
               size="lg" 
+              
               className="group"
-              onClick={userId ? () => navigate("/user") : () => navigate("/auth")}
+              onClick={userId ? () => 
+                (`/u/${userId}`) : () => navigate("/auth")}
             >
               Join the Community
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />

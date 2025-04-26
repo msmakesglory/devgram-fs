@@ -1,10 +1,6 @@
-
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { Mail, GitBranch, MapPin, Calendar, Link as LinkIcon } from 'lucide-react';
 import Button from '../ui/CustomButton';
 import { cn } from '@/lib/utils';
-// import useUserContext from '@/contexts/UserContext.tsx';
 
 type ProfileCardProps = {
   id: string;

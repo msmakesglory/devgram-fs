@@ -8,21 +8,35 @@ import Button from '@/components/ui/CustomButton';
 import { useUserContext } from '@/contexts/UserContext';
 import api from '@/api/api';
 import { useParams } from 'react-router-dom';
+import User from '@/types/User';
+
+
+
+
 
 
 const Profile = () => {
-  const { user, allSkills } = useUserContext();
+  const { user, userId, allSkills } = useUserContext();
   const [projects, setProjects] = useState([]);
   const [ activeTab, setActiveTab ] = useState("projects");
   const [loading, setLoading] = useState<boolean>(true);
   const {uid: paramUserID} = useParams();
+  const [inspectedUser, setInspectedUser] = useState<User[]>();
 
 
   useEffect(() => {
     const fetchProjects = async () => {
-      if (!user.id) return;
+      if (!userId && !paramUserID) return;
       try {
-        const response = await api.get(`/api/posts/u/${user.id}`);
+
+        let owner = user;
+
+        if (paramUserID !== userId) {
+          const userResponse = await api.get(`/user/${paramUserID}`);
+          setInspectedUser(userResponse.data);
+          owner = userResponse.data;
+        }
+        const response = await api.get(`/api/posts/u/${paramUserID}`);
         const fetchedProjects = response.data;
   
         // Transform the data to match the expected format
@@ -32,9 +46,9 @@ const Profile = () => {
           description: post.description,
           timestamp: post.timestamp,
           owner: {
-            id: user.id,
-            fullName: user.fullName,
-            profilePictureUrl: user.profilePictureUrl,
+            id: owner.id,
+            fullName: owner.fullName,
+            profilePictureUrl: owner.profilePictureUrl,
           },
           skillIds: post.skillIds || [], // Default to []
           collaboratorIds: Array.isArray(post.collaboratorIds) ? post.collaboratorIds : [],
@@ -49,8 +63,8 @@ const Profile = () => {
       }
     };
   
-    fetchProjects();
-  }, [user]);
+    fetchProjects(paramUserID);
+  }, [ paramUserID]);
 
 
   // Handle case where user is null
@@ -65,7 +79,7 @@ const Profile = () => {
 
   // Preprocess the user data to include default values for missing fields
   const profileData = {
-    ...user,
+    ...(inspectedUser || user),
     bio: user.bio || "No bio available.",
     location: user.location || "Location not specified.",
     website: user.website || "",
@@ -73,7 +87,7 @@ const Profile = () => {
     projectCount: user.projectCount || 0, // Default to 0
     impressionsCounts: user.impressionsCount || 0, // Default to 0
     skills: user.skills && user.skills.length > 0 ? user.skills : ["No skills added yet."], // Default to placeholder text
-    profilePictureUrl: user.profilePictureUrl || "https://via.placeholder.com/150", // Default placeholder image
+    // profilePictureUrl: user.profilePictureUrl || "https://via.placeholder.com/150", // Default placeholder image
   };
 
   
