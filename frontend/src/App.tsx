@@ -19,7 +19,6 @@ import {useEffect, useState} from "react";
 import { IdCard } from "lucide-react";
 
 const queryClient = new QueryClient();
-
 const App = () => {
 
 

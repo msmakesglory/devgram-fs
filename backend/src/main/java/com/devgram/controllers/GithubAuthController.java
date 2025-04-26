@@ -66,7 +66,7 @@ public class GithubAuthController {
         response.setHeader("Set-Cookie", cookie.toString());
 
         // Step 6: Redirect to frontend
-        response.sendRedirect("http://localhost:5173/user");
+        response.sendRedirect("http://localhost:5173/projects");
     }
 
     private String getAccessTokenFromGithub(String code) {
