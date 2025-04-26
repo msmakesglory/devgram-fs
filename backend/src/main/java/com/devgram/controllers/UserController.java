@@ -1,5 +1,6 @@
 package com.devgram.controllers;
 
+import com.devgram.services.MyUserService;
 import com.devgram.models.MyUser;
 import com.devgram.repos.UserRepository;
 import com.devgram.services.jwt.JwtUtils;
@@ -9,14 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -29,6 +27,8 @@ public class UserController {
     UserRepository myUserRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private MyUserService userService;
 
     @GetMapping("/me")
     public ResponseEntity<Optional<MyUser>> getCurrentUser() {
@@ -39,6 +39,15 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getInspectedUser(@PathVariable UUID userId) {
+         Optional<MyUser> user = userService.getUserById(userId);
+
+         if (user.isPresent()) {
+             return ResponseEntity.ok(user);
+         }
+         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    }
     @GetMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletResponse response) throws IOException {
         ResponseCookie deleteCookie = ResponseCookie.from("jwt", "")

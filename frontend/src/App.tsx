@@ -16,6 +16,7 @@ import { UserProvider } from "./contexts/UserContext";
 import Developers from "./pages/Developers";
 import PostForm from "@/pages/PostForm.tsx";
 import {useEffect, useState} from "react";
+import { IdCard } from "lucide-react";
 
 const queryClient = new QueryClient();
 
@@ -31,12 +32,11 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index/>}/>
-              <Route path="/user" element={<Profile/>}/>
+              <Route path='/u/:uid' element={<Profile/>}/>
               <Route path="*" element={<NotFound/>}/>
               <Route path="/projects" element={<Projects/>}/>
               <Route path="/auth" element={<Auth/>}/>
               <Route path="/feed" element={<Feed/>}/>
-              <Route path="/profile/:id" element={<Profile/>}/>
               <Route path="/chat" element={<Chat/>}/>
               <Route path="/developers" element={<Developers/>}/>
             </Routes>

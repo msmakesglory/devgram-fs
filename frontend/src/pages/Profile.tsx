@@ -7,35 +7,7 @@ import ProjectCard from '@/components/projects/ProjectCard';
 import Button from '@/components/ui/CustomButton';
 import { useUserContext } from '@/contexts/UserContext';
 import api from '@/api/api';
-
-const posts = [
-  {
-    id: '1',
-    user: {
-      id: 'user1',
-      name: 'Alex Morgan',
-      username: 'alexmorgan',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80',
-    },
-    content: 'Just launched a new React component library with Typescript support! Check it out and let me know what you think! #React #TypeScript #OpenSource',
-    timestamp: '2023-09-15T14:30:00Z',
-    likes: 42,
-    comments: 8,
-    isLiked: false,
-  },
-];
-
-const projects = [
-  {
-    id: 'proj1',
-    name: 'React Component Library',
-    description: 'A collection of reusable React components with TypeScript support.',
-    stars: 124,
-    tech: ['React', 'TypeScript', 'Storybook'],
-  },
-];
-
-
+import { useParams } from 'react-router-dom';
 
 
 const Profile = () => {
@@ -43,7 +15,8 @@ const Profile = () => {
   const [projects, setProjects] = useState([]);
   const [ activeTab, setActiveTab ] = useState("projects");
   const [loading, setLoading] = useState<boolean>(true);
-  const [log, setLog] = useState(false);
+  const {uid: paramUserID} = useParams();
+
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -66,13 +39,9 @@ const Profile = () => {
           skillIds: post.skillIds || [], // Default to []
           collaboratorIds: Array.isArray(post.collaboratorIds) ? post.collaboratorIds : [],
           githubUrl: post.repoLink || null, // Use repoLink or null if not available
-          stars: 0, // Default value since no stars are provided
-          forks: 0, // Default value since no forks are provided
-          isStarred: false, // Default value
-        }));
+              }));
   
         setProjects(formattedProjects);
-        setLog(true);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching projects:', error);

@@ -87,6 +87,11 @@ public class MyUserService implements UserDetailsService {
         return userRepository.findByEmail(username).orElseThrow(()->new UsernameNotFoundException("MyUser not found"));
     }
 
+    public Optional<MyUser> getUserById(UUID userId) {
+        return userRepository.findById(userId);
+    }
+
+
     UserResDto convertToDto(MyUser myUser) {
         return new UserResDto(
                 myUser.getId(),

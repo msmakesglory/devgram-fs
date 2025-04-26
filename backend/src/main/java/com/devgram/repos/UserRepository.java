@@ -13,4 +13,7 @@ public interface UserRepository extends JpaRepository<MyUser, UUID> {
     List<MyUser> findAllById(Iterable<UUID> ids);
 
     Optional<MyUser> findByEmail(String email);
+
+    @Override
+    Optional<MyUser> findById(UUID id);
 }
