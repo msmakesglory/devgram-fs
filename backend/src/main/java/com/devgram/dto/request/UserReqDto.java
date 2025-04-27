@@ -20,6 +20,8 @@ public class UserReqDto {
     private String location;
     private String website;
     private Date joinDate;
+    private String githubUrl;
+    private String linkedinUrl;
     private List<Long> skillIds;
 
     void fix(){

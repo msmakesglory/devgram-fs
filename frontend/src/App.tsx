@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/contexts/AuthContext";
+// import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Feed from "./pages/Feed";
@@ -14,9 +14,7 @@ import Projects from "./pages/Projects";
 import NotFound from "./pages/NotFound";
 import { UserProvider } from "./contexts/UserContext";
 import Developers from "./pages/Developers";
-import PostForm from "@/pages/PostForm.tsx";
-import {useEffect, useState} from "react";
-import { IdCard } from "lucide-react";
+
 
 const queryClient = new QueryClient();
 const App = () => {
@@ -24,7 +22,7 @@ const App = () => {
 
   return <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <AuthProvider>
+      {/* <AuthProvider> */}
         <UserProvider>
           <Toaster/>
           <Sonner/>
@@ -41,7 +39,7 @@ const App = () => {
             </Routes>
           </BrowserRouter>
         </UserProvider>
-      </AuthProvider>
+      {/* </AuthProvider> */}
     </TooltipProvider>
   </QueryClientProvider>
 };

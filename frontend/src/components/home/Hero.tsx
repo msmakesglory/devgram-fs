@@ -40,7 +40,7 @@ const Hero = () => {
               
               className="group"
               onClick={userId ? () => 
-                (`/u/${userId}`) : () => navigate("/auth")}
+                navigate(`/u/${userId}`) : () => navigate("/auth")}
             >
               Join the Community
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />

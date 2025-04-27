@@ -24,5 +24,7 @@ public class UserResDto {
     private Date joinDate;
     private int projectCount;
     private int impressionsCount;
+    private String githubUrl;
+    private String linkedinUrl;
     private List<Long> skillIds = new ArrayList<>();
 }

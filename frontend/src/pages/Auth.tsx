@@ -4,13 +4,13 @@ import { Navigate } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import AuthTabs from '@/components/auth/AuthTabs';
-import { useAuth } from '@/contexts/AuthContext';
+import { useUserContext } from '@/contexts/UserContext';
 
 const Auth = () => {
-  const { user, loading } = useAuth();
+  const { user } = useUserContext();
   
   // Redirect if already logged in=
-  if (!loading && user) {
+  if (user) {
     return <Navigate to="/feed" />;
   }
 

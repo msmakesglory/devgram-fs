@@ -33,6 +33,7 @@ public class MyUser implements UserDetails {
     private String bio;
 
     private String location;
+
     private String website;
 
     private Date joinDate;
@@ -43,6 +44,9 @@ public class MyUser implements UserDetails {
     @ColumnDefault("0")
     private Integer impressionsCount;
 
+    private String githubUrl;
+
+    private String linkedinUrl;
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "user_skill",

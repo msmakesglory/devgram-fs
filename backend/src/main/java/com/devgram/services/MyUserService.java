@@ -105,7 +105,10 @@ public class MyUserService implements UserDetailsService {
                 myUser.getJoinDate(),
                 myUser.getProjectCount() == null ? 0 : myUser.getProjectCount(),
                 myUser.getImpressionsCount() == null ? 0 : myUser.getImpressionsCount(),
+                myUser.getGithubUrl(),
+                myUser.getLinkedinUrl(),
                 myUser.getSkillIds()
+
         );
     }
 }
