@@ -1,5 +1,6 @@
 package com.devgram.controllers;
 
+import com.devgram.dto.request.UserReqDto;
 import com.devgram.services.MyUserService;
 import com.devgram.models.MyUser;
 import com.devgram.repos.UserRepository;
@@ -48,6 +49,14 @@ public class UserController {
          }
          return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
+
+    @PostMapping("/{userId}")
+    public ResponseEntity<MyUser> setProfileDetails(@PathVariable UUID userId, @RequestBody UserReqDto request) {
+        MyUser updatedUser = userService.setUserDetails(userId, request);
+
+        return ResponseEntity.ok(updatedUser);
+    }
+
     @GetMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletResponse response) throws IOException {
         ResponseCookie deleteCookie = ResponseCookie.from("jwt", "")

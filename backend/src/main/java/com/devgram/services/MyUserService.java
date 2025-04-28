@@ -1,6 +1,7 @@
 package com.devgram.services;
 
 
+import com.devgram.dto.request.UserReqDto;
 import com.devgram.dto.response.UserResDto;
 import com.devgram.models.MyUser;
 import com.devgram.repos.UserRepository;
@@ -90,6 +91,25 @@ public class MyUserService implements UserDetailsService {
     public Optional<MyUser> getUserById(UUID userId) {
         return userRepository.findById(userId);
     }
+
+    public MyUser setUserDetails(UUID userId, UserReqDto request) {
+        request.fix();
+
+        Optional<MyUser> optionalUser = userRepository.findById(userId);
+
+        if (optionalUser.isEmpty()) throw  new RuntimeException("User not found");
+
+        MyUser user = optionalUser.get();
+
+        user.setBio(request.getBio());
+        user.setLocation(request.getLocation());
+        user.setWebsite(request.getWebsite());
+        user.setGithubUrl(request.getGithubUrl());
+        user.setLinkedinUrl(request.getLinkedinUrl());
+
+        return userRepository.save(user);
+    }
+
 
 
     UserResDto convertToDto(MyUser myUser) {

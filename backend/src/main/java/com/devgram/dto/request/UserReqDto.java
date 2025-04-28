@@ -24,7 +24,7 @@ public class UserReqDto {
     private String linkedinUrl;
     private List<Long> skillIds;
 
-    void fix(){
+    public void fix(){
         if (this.skillIds == null){
             this.skillIds = new ArrayList<>();
         }
