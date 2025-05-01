@@ -45,6 +45,7 @@ public class PostsService {
 
     public List<PostResDto> getPaginatedPosts(int page, int size) {
         int offset = page * size;
+        System.out.println(offset + " " + size);
         List<PostFlatData> flatDataList = postRepository.getPaginatedPosts(offset, size);
         Map<UUID, PostResDto> postMap = new LinkedHashMap<>();
 

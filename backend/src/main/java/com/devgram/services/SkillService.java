@@ -27,8 +27,10 @@ public class SkillService {
     }
 
     public Skill addSkill(String skillName) {
-        Skill skill = new Skill();
-        skill.setSkillName(skillName.toLowerCase());
-        return skillRepository.save(skill);
+        try {
+            return skillRepository.save(new Skill(null, skillName));
+        } catch (Exception e) {
+            return skillRepository.findBySkillName(skillName).get();
+        }
     }
 }
