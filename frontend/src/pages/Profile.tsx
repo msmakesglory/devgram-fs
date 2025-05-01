@@ -4,12 +4,21 @@ import Footer from '@/components/layout/Footer';
 import ProfileCard from '@/components/profile/ProfileCard';
 import PostCard from '@/components/posts/PostCard';
 import ProjectCard from '@/components/projects/ProjectCard';
-import Button from '@/components/ui/CustomButton';
+import {Button} from '@/components/ui/button';
 import { useUserContext } from '@/contexts/UserContext';
 import api from '@/api/api';
 import { useParams } from 'react-router-dom';
 import User from '@/types/User';
 import { getProfileData } from '@/lib/utils';
+import {Input} from "@/components/ui/input";
+import {Search, MoreVertical} from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
 
 
 
@@ -34,7 +43,6 @@ const Profile = () => {
         if (paramUserID !== userId) {
           const userResponse = await api.get(`/user/${paramUserID}`);
           setInspectedUser(userResponse.data);
-          console.log(userResponse.data.location);
           owner = userResponse.data;
         }
         const response = await api.get(`/api/posts/u/${paramUserID}`);
@@ -91,30 +99,60 @@ const Profile = () => {
         <ProfileCard {...profileData} className="mb-8" />
 
         <div className='mb-8'>
-          <div className='flex border-b border-border mb-6'>
-            {/* Tab Buttons */}
-            <button
-              onClick={() => setActiveTab('projects')}
-              className={`px-4 py-3 font-medium ${
-                activeTab === 'projects'
-                  ? 'text-blue-500 border-b-2 border-blue-500'
-                  : 'text-foreground/60 hover:text-foreground smooth-transition'
-              }`}
-            >
-              Projects
-            </button>
+  <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-border mb-6 gap-4'>
+    {/* Tab Buttons */}
+    <div className='flex space-x-6'>
+      <button
+        onClick={() => setActiveTab('projects')}
+        className={`font-medium pb-3 ${
+          activeTab === 'projects'
+            ? 'text-blue-500 border-b-2 border-blue-500'
+            : 'text-foreground/60 hover:text-foreground smooth-transition'
+        }`}
+      >
+        Projects
+      </button>
 
-            <button
-              onClick={() => setActiveTab('about')}
-              className={`px-4 py-3 font-medium ${
-                activeTab === 'about'
-                  ? 'text-blue-500 border-b-2 border-blue-500'
-                  : 'text-foreground/60 hover:text-foreground smooth-transition'
-              }`}
-            >
-              About
-            </button>
-          </div>
+      <button
+        onClick={() => setActiveTab('about')}
+        className={`font-medium pb-3 ${
+          activeTab === 'about'
+            ? 'text-blue-500 border-b-2 border-blue-500'
+            : 'text-foreground/60 hover:text-foreground smooth-transition'
+        }`}
+      >
+        About
+      </button>
+    </div>
+
+    {/* Search Bar + Dropdown Menu - Hidden on small screens */}
+   
+      <div className='flex items-center space-x-2 w-full sm:w-auto'>
+      <div className='relative w-full sm:w-64'>
+        <Input
+          type='search'
+          placeholder='Search projects...'
+          className='pl-9 h-9 border-none focus-visible:ring-0'
+        />
+        <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
+      </div>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className='border-none'>
+        <MoreVertical className='h-5 w-5' />
+      </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align='end' className="z-[100]">
+          <DropdownMenuItem>Create Post</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Edit Post</DropdownMenuItem>
+          <DropdownMenuItem>Edit About</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+    
+  </div>
 
           {/* Tab Content */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

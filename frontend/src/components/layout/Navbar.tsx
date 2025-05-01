@@ -158,9 +158,10 @@ const Navbar = () => {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <div >
+                    <div   
+                      onClick={() => navigate(`/u/${userId}`)}>
                       <p className="font-medium">{user.fullName}</p>
-                      <p className="text-sm text-foreground/60"  onClick={() => navigate(`/u/${userId}`)}>View profile</p>
+                      <p className="text-sm text-foreground/60">View profile</p>
                     </div>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
