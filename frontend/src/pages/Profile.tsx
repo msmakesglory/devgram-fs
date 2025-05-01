@@ -9,7 +9,7 @@ import { useUserContext } from '@/contexts/UserContext';
 import api from '@/api/api';
 import { useParams } from 'react-router-dom';
 import User from '@/types/User';
-
+import { getProfileData } from '@/lib/utils';
 
 
 
@@ -21,7 +21,7 @@ const Profile = () => {
   const [ activeTab, setActiveTab ] = useState("projects");
   const [loading, setLoading] = useState<boolean>(true);
   const {uid: paramUserID} = useParams();
-  const [inspectedUser, setInspectedUser] = useState<User[]>();
+  const [inspectedUser, setInspectedUser] = useState<User | undefined>(undefined);
 
 
   useEffect(() => {
@@ -34,6 +34,7 @@ const Profile = () => {
         if (paramUserID !== userId) {
           const userResponse = await api.get(`/user/${paramUserID}`);
           setInspectedUser(userResponse.data);
+          console.log(userResponse.data.location);
           owner = userResponse.data;
         }
         const response = await api.get(`/api/posts/u/${paramUserID}`);
@@ -63,7 +64,7 @@ const Profile = () => {
       }
     };
   
-    fetchProjects(paramUserID);
+    fetchProjects();
   }, [ paramUserID]);
 
 
@@ -78,18 +79,7 @@ const Profile = () => {
   }
 
   // Preprocess the user data to include default values for missing fields
-  const profileData = {
-    ...(inspectedUser || user),
-    bio: user.bio || "No bio available.",
-    location: user.location || "Location not specified.",
-    website: user.website || "",
-    joinDate: user.joinDate || new Date().toISOString(), // Default to current date
-    projectCount: user.projectCount || 0, // Default to 0
-    impressionsCounts: user.impressionsCount || 0, // Default to 0
-    skills: user.skills && user.skills.length > 0 ? user.skills : ["No skills added yet."], // Default to placeholder text
-    // profilePictureUrl: user.profilePictureUrl || "https://via.placeholder.com/150", // Default placeholder image
-  };
-
+  const profileData = getProfileData(inspectedUser || user)
   
 
   return (
@@ -153,7 +143,7 @@ const Profile = () => {
               {activeTab === 'about' && (
                 <div className="glass-card p-6 space-y-4">
                   <h3 className="font-semibold">About</h3>
-                  <p className="text-sm text-foreground/70">{profileData.bio}</p>
+                  <p className="text-sm text-foreground/70"><strong>Bio: </strong>{profileData.bio}</p>
                   <p className="text-sm text-foreground/70">
                     <strong>Location:</strong> {profileData.location}
                   </p>
