@@ -11,5 +11,7 @@ export default interface User {
     projectCount?: number | null;
     impressionsCount?: number | null;
     bio?: string | null;
+    githubUrl?: string | null;
+    linkedinUrl?: string | null;
 
 }

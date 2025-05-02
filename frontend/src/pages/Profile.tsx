@@ -125,7 +125,6 @@ const Profile = () => {
       </button>
     </div>
 
-    {/* Search Bar + Dropdown Menu - Hidden on small screens */}
    
       <div className='flex items-center space-x-2 w-full sm:w-auto'>
       <div className='relative w-full sm:w-64'>
@@ -181,7 +180,9 @@ const Profile = () => {
               {activeTab === 'about' && (
                 <div className="glass-card p-6 space-y-4">
                   <h3 className="font-semibold">About</h3>
-                  <p className="text-sm text-foreground/70"><strong>Bio: </strong>{profileData.bio}</p>
+                  <p className="text-sm text-foreground/70">
+                    <strong>Bio: </strong>{profileData.bio}
+                  </p>
                   <p className="text-sm text-foreground/70">
                     <strong>Location:</strong> {profileData.location}
                   </p>
@@ -200,6 +201,26 @@ const Profile = () => {
                   </p>
                   <p className="text-sm text-foreground/70">
                     <strong>Skills:</strong> {profileData.skills.join(', ')}
+                  </p>
+                  <p className="text-sm text-foreground/70">
+                    <strong>Github: </strong>
+                    {profileData.githubUrl ? (
+                      <a href={profileData.githubUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                        {profileData.githubUrl}
+                      </a>
+                    ) : (
+                      'Not provided'
+                    )}
+                  </p>
+                  <p className="text-sm text-foreground/70">
+                    <strong>Linkedin: </strong>
+                    {profileData.linkedinUrl ? (
+                      <a href={profileData.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                        {profileData.linkedinUrl}
+                      </a>
+                    ) : (
+                      'Not provided'
+                    )}
                   </p>
                 </div>
               )}
