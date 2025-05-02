@@ -4,6 +4,8 @@ package com.devgram.services;
 import com.devgram.dto.request.UserReqDto;
 import com.devgram.dto.response.UserResDto;
 import com.devgram.models.MyUser;
+import com.devgram.models.Skill;
+import com.devgram.repos.SkillRepository;
 import com.devgram.repos.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +19,14 @@ import java.util.*;
 public class MyUserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final SkillService skillService;
+    private final SkillRepository skillRepository;
     UserRepository userRepo;
-    public MyUserService(UserRepository userRepo, UserRepository userRepository) {
+    public MyUserService(UserRepository userRepo, UserRepository userRepository, SkillService skillService, SkillRepository skillRepository) {
         this.userRepo = userRepo;
         this.userRepository = userRepository;
+        this.skillService = skillService;
+        this.skillRepository = skillRepository;
     }
 
     @Override
@@ -106,6 +112,15 @@ public class MyUserService implements UserDetailsService {
         user.setWebsite(request.getWebsite());
         user.setGithubUrl(request.getGithubUrl());
         user.setLinkedinUrl(request.getLinkedinUrl());
+
+        List<Skill> skills = new ArrayList<>(skillRepository.findAllById(request.getSkillIds()));
+
+        if(!request.getNewSkills().isEmpty()) {
+            for(String skill : request.getNewSkills()) {
+                skills.add(skillService.addSkill(skill));
+            }
+        }
+        user.setSkills(skills);
 
         return userRepository.save(user);
     }

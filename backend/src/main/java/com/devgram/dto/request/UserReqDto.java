@@ -23,10 +23,14 @@ public class UserReqDto {
     private String githubUrl;
     private String linkedinUrl;
     private List<Long> skillIds;
+    private List<String> newSkills;
 
     public void fix(){
         if (this.skillIds == null){
             this.skillIds = new ArrayList<>();
+        }
+        if (this.newSkills == null){
+            this.newSkills = new ArrayList<>();
         }
     }
 }
