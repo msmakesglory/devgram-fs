@@ -1,6 +1,7 @@
 import { Mail, GitBranch, MapPin, Calendar, Link as LinkIcon } from 'lucide-react';
 import Button from '../ui/CustomButton';
 import { cn } from '@/lib/utils';
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
 
 type ProfileCardProps = {
   id: string;
@@ -16,6 +17,8 @@ type ProfileCardProps = {
   projectCount: number;
   impressionsCounts: number;
   className?: string;
+  githubUrl?: string;
+  linkedinUrl?: string;
 };
 const ProfileCard = ({
   id,
@@ -30,6 +33,8 @@ const ProfileCard = ({
   joinDate,
   projectCount,
   impressionsCounts,
+  githubUrl,
+  linkedinUrl,
   className,
 }: ProfileCardProps) => {
   const formatDate = (dateString: string) => {
@@ -40,6 +45,7 @@ const ProfileCard = ({
     }).format(date);
   };
 
+  console.log(githubUrl, linkedinUrl)
   return (
     <div className={cn("glass-card rounded-xl overflow-hidden", className)}>
       {/* Cover Image */}
@@ -127,6 +133,22 @@ const ProfileCard = ({
               <GitBranch size={14} />
               <span>{projectCount} projects</span>
             </div>
+            {githubUrl && (
+              <div className="flex items-center gap-1">
+              <a
+                  href={githubUrl}
+                  target="_blank"
+                ><FaGithub size={14} /></a>
+            </div>
+            )}
+            {linkedinUrl && (
+              <div className="flex items-center gap-1">
+              <a
+                  href={linkedinUrl}
+                  target="_blank"
+                ><FaLinkedin size={14} /></a>
+            </div>
+            )}
           </div>
         </div>
       </div>

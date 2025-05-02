@@ -14,6 +14,7 @@ import Projects from "./pages/Projects";
 import NotFound from "./pages/NotFound";
 import { UserProvider } from "./contexts/UserContext";
 import Developers from "./pages/Developers";
+import Test from "./test/Test";
 
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => {
               <Route path="/feed" element={<Feed/>}/>
               <Route path="/chat" element={<Chat/>}/>
               <Route path="/developers" element={<Developers/>}/>
+              <Route path="/test" element={<Test />} />
             </Routes>
           </BrowserRouter>
         </UserProvider>
