@@ -4,7 +4,6 @@ export default interface User {
     username: string;
     email: string;
     profilePictureUrl: string;
-    skills: string[];
     location?: string | null;
     website?: string | null;
     joinDate?: string | null;
@@ -13,5 +12,6 @@ export default interface User {
     bio?: string | null;
     githubUrl?: string | null;
     linkedinUrl?: string | null;
+    skillIds?: number[];
 
 }

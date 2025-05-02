@@ -2,6 +2,7 @@ import React from "react";
 import { useUserContext } from "@/contexts/UserContext";
 import { Star, GitFork, Github } from "lucide-react"; // Assuming you're using Lucide icons
 import Button from "@/components/ui/CustomButton"; // Adjust the import path as needed
+import {capitalizeFirstLetter} from "@/lib/utils";
 
 interface Project {
   postId: string;
@@ -77,13 +78,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         {Array.isArray(project.skillIds) && project.skillIds.length > 0 ? (
           <>
             {project.skillIds.slice(0, 3).map((skillId, i) => {
-              const skill = allSkills.find((s) => s.skillId === skillId); // Safe lookup
+              const skill = allSkills.find((s) => s.skillId === skillId);
               return (
                 <span
                   key={i}
                   className="px-2 py-1 bg-secondary/60 dark:bg-secondary/40 rounded-md text-xs font-medium"
                 >
-                  {skill ? skill.skillName : 'Unknown Skill'}
+                  {skill ? capitalizeFirstLetter(skill.skillName) : 'Unknown Skill'}
                 </span>
               );
             })}

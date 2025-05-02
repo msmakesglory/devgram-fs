@@ -24,8 +24,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             try {
                 const response = await api.get("/user/me");
                 // console.log(response.data)
-                setUser(response.data); // Set the user data once fetched
-                setUserId(response.data.id);
+                const {skills, ...restData} = response.data;
+                setUser(restData); // Set the user data once fetched
+                setUserId(restData.id);
+                console.log(restData, response.data);
             } catch (err) {
                 console.error('Failed to fetch user', err);
                 // Optionally, you can show a message to the user here

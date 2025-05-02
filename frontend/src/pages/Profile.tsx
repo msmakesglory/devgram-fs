@@ -19,7 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-
+import {capitalizeFirstLetter} from "@/lib/utils";
 
 
 
@@ -200,7 +200,10 @@ const Profile = () => {
                     <strong>Joined:</strong> {new Date(profileData.joinDate).toLocaleDateString()}
                   </p>
                   <p className="text-sm text-foreground/70">
-                    <strong>Skills:</strong> {profileData.skills.join(', ')}
+                    <strong>Skills:</strong> {profileData.skillIds.map(id => {
+                      const skill = allSkills.find(s => s.skillId === id);
+                      return skill ? capitalizeFirstLetter(skill.skillName) : null;
+                    }).join(", ")}
                   </p>
                   <p className="text-sm text-foreground/70">
                     <strong>Github: </strong>

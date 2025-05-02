@@ -2,6 +2,8 @@ import { Mail, GitBranch, MapPin, Calendar, Link as LinkIcon } from 'lucide-reac
 import Button from '../ui/CustomButton';
 import { cn } from '@/lib/utils';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { useUserContext } from '@/contexts/UserContext';
+import {capitalizeFirstLetter} from "@/lib/utils";
 
 type ProfileCardProps = {
   id: string;
@@ -12,7 +14,7 @@ type ProfileCardProps = {
   profilePictureUrl: string;
   location?: string;
   website?: string;
-  skills: string[];
+  skillIds: number[];
   joinDate: string;
   projectCount: number;
   impressionsCounts: number;
@@ -29,7 +31,7 @@ const ProfileCard = ({
   profilePictureUrl,
   location,
   website,
-  skills,
+  skillIds,
   joinDate,
   projectCount,
   impressionsCounts,
@@ -44,8 +46,8 @@ const ProfileCard = ({
       month: 'long',
     }).format(date);
   };
+ const {allSkills} = useUserContext();
 
-  console.log(githubUrl, linkedinUrl)
   return (
     <div className={cn("glass-card rounded-xl overflow-hidden", className)}>
       {/* Cover Image */}
@@ -92,14 +94,17 @@ const ProfileCard = ({
           )}
 
           <div className="flex flex-wrap gap-3 pt-2">
-            {skills.map((skill, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 bg-secondary/80 dark:bg-secondary/40 rounded-full text-xs font-medium text-foreground/70"
-              >
-                {skill}
-              </span>
-            ))}
+            {skillIds.map((skillId) => {
+              const skill = allSkills.find((s) => s.skillId === skillId);
+              return skill ? (
+                <span
+                  key={skill.skillId}
+                  className="px-3 py-1 bg-secondary/80 dark:bg-secondary/40 rounded-full text-xs font-medium text-foreground/70"
+                >
+                  {capitalizeFirstLetter(skill.skillName)}
+                </span>
+              ) : null;
+            })}
           </div>
 
           <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-foreground/60 pt-1">
