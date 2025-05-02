@@ -47,7 +47,7 @@ public class MyUser implements UserDetails {
     private String githubUrl;
 
     private String linkedinUrl;
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},  fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_skill",
             joinColumns = @JoinColumn(name = "user_id"),

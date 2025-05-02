@@ -6,26 +6,33 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-interface UserFormProps {
-    userId: string;
-    onSuccess: () => void;
-}
 
-const Test: React.FC<UserFormProps> = ({onSuccess}) => {
+
+const Test = () => {
    const [userForm, setUserForm] = useState({
         bio: '',
         location: '',
         website: '',
         githubUrl: '',
-        linkedinUrl: ''
+        linkedinUrl: '',
+        skillIds: [] as number[],
     })
     const [error, setError] = useState('');
-    const { userId } = useUserContext();
+    const { userId, allSkills } = useUserContext();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;
         setUserForm((prev) => ({...prev, [name] : value}));
     }
+
+    const handleSkillToggle = (id: number) => {
+        setUserForm((prev) => ({
+            ...prev,
+            skillIds: prev.skillIds.includes(id)
+                ? prev.skillIds.filter((sid) => sid !== id)
+                : [...prev.skillIds, id],
+        }));
+    };
     
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -94,7 +101,23 @@ const Test: React.FC<UserFormProps> = ({onSuccess}) => {
                     onChange={handleChange}
                 />
             </div>
-            <Button type="submit">Create Post</Button>
+            <div>
+                <Label>Existing Skills</Label>
+                <div className="flex flex-wrap gap-2 mt-2">
+                    {allSkills.map((skill) => (
+                        <Button
+                            type="button"
+                            key={skill.skillId}
+                            variant={userForm.skillIds.includes(skill.skillId) ? "default" : "outline"}
+                            onClick={() => handleSkillToggle(skill.skillId)}
+                            className="text-sm"
+                        >
+                            {skill.skillName}
+                        </Button>
+                    ))}
+                </div>
+            </div>
+            <Button type="submit">Update</Button>
         </form>
     )
 };
