@@ -27,7 +27,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                 const {skills, ...restData} = response.data;
                 setUser(restData); // Set the user data once fetched
                 setUserId(restData.id);
-                console.log(restData, response.data);
             } catch (err) {
                 console.error('Failed to fetch user', err);
                 // Optionally, you can show a message to the user here

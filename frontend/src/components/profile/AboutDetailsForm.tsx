@@ -16,8 +16,8 @@ type FormData = {
   };
 
 
-const Test = ({ initialData }: { initialData?: FormData }) => {
-   const [userForm, setUserForm] = useState( initialData || {
+const AboutDetailsForm = () => {
+   const [userForm, setUserForm] = useState({
         bio: '',
         location: '',
         website: '',
@@ -130,4 +130,4 @@ const Test = ({ initialData }: { initialData?: FormData }) => {
     )
 };
 
-export default Test;
+export default AboutDetailsForm;
