@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/skills")
@@ -34,4 +35,12 @@ public class SkillController {
 
         return ResponseEntity.ok(skills);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteSkill(@PathVariable long id) {
+        boolean success = skillService.deleteSkill(id);
+        if (success) return ResponseEntity.ok("Skill deleted SuccessFully");
+        return ResponseEntity.badRequest().body("Failed to delete skill");
+    }
+
 }

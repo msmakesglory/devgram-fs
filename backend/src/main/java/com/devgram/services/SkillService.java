@@ -33,4 +33,10 @@ public class SkillService {
             return skillRepository.findBySkillName(skillName).get();
         }
     }
+
+    public boolean deleteSkill(long skillId) {
+        if(!skillRepository.existsById(skillId)) return false;
+        skillRepository.deleteById(skillId);
+        return true;
+    }
 }
