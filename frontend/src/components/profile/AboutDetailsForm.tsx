@@ -13,8 +13,8 @@ type FormData = {
     githubUrl: string;
     linkedinUrl: string;
     skillIds: number[];
-  };
-
+    newSkills: string[];
+};
 
 const AboutDetailsForm = () => {
    const [userForm, setUserForm] = useState({
@@ -24,6 +24,7 @@ const AboutDetailsForm = () => {
         githubUrl: '',
         linkedinUrl: '',
         skillIds: [] as number[],
+        newSkills: [] as string[],
     })
     const [error, setError] = useState('');
     const { userId, allSkills } = useUserContext();
